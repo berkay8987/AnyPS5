@@ -715,14 +715,6 @@ int APS5_VABI _ZN3JSC17JSArrayBufferViewC2ERNS_2VMERNS0_19ConstructionContextE()
 
 extern "C" {
 
-int APS5_VABI JSGlobalContextSetDebuggerRunLoopWithCurrentRunLoop() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI JSGlobalContextUnsetDebuggerRunLoop() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI JSRunLoopIterateCurrentRunLoop() {
     NotImplemented_nid_no_patch(__func__);
 }
