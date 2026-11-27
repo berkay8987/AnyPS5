@@ -202,8 +202,7 @@ Jsc::WtfAbi::PrintStream* WtfDataFile_nid_no_patch() {
 
 void WtfInstallDataFile_nid_no_patch(Jsc::WtfAbi::FilePrintStream* file) {
     if (!file) file = new (fileData) FilePrintStream{FilePrintStreamVtable + 2, &_Stdout_nid_postfix, Jsc::WtfAbi::FilePrintStreamBorrow};
-    if (file->file != &_Stdout_nid_postfix && setvbuf_nid_postfix(file->file, nullptr, GuestUnbuffered, 0) != 0)
-        throw std::runtime_error("WTF::setDataFile: setvbuf failed on the data file");
+    if (file->file != &_Stdout_nid_postfix) setvbuf_nid_postfix(file->file, nullptr, GuestUnbuffered, 0);
     if (PrintStream* previous = dataFile.load(std::memory_order_acquire)) Slot<Flush>(previous, Jsc::WtfAbi::PrintStreamFlush)(previous);
     auto* locked = new (lockedFileData) LockedPrintStream{};
     locked->vtable = LockedPrintStreamVtable + 2;
