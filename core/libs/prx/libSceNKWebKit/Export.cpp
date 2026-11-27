@@ -18056,14 +18056,6 @@ int APS5_VABI _ZN7WebCore22FontCascadeDescriptionC2Ev() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN7WebCore22GraphicsLayerTransformC1Ev() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN7WebCore22GraphicsLayerTransformC2Ev() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN7WebCore22HTMLFormControlElement13setFormActionERKN3WTF10AtomStringE() {
     NotImplemented_nid_no_patch(__func__);
 }
