@@ -160,6 +160,7 @@ const void* const LockedPrintStreamVtable[] = {
     reinterpret_cast<const void*>(&LockedPrintStreamEnd_nid_no_patch),
 };
 
+constexpr int GuestUnbuffered = 2;
 std::atomic<PrintStream*> dataFile{nullptr};
 alignas(FilePrintStream) unsigned char fileData[sizeof(FilePrintStream)];
 alignas(LockedPrintStream) unsigned char lockedFileData[sizeof(LockedPrintStream)];
@@ -197,6 +198,17 @@ Jsc::WtfAbi::PrintStream* WtfDataFile_nid_no_patch() {
     PrintStream* file = dataFile.load(std::memory_order_acquire);
     if (!file) throw std::logic_error("WTF::dataFile: setDataFile installed a null stream");
     return file;
+}
+
+void WtfInstallDataFile_nid_no_patch(Jsc::WtfAbi::FilePrintStream* file) {
+    if (!file) file = new (fileData) FilePrintStream{FilePrintStreamVtable + 2, &_Stdout_nid_postfix, Jsc::WtfAbi::FilePrintStreamBorrow};
+    if (file->file != &_Stdout_nid_postfix && setvbuf_nid_postfix(file->file, nullptr, GuestUnbuffered, 0) != 0)
+        throw std::runtime_error("WTF::setDataFile: setvbuf failed on the data file");
+    if (PrintStream* previous = dataFile.load(std::memory_order_acquire)) Slot<Flush>(previous, Jsc::WtfAbi::PrintStreamFlush)(previous);
+    auto* locked = new (lockedFileData) LockedPrintStream{};
+    locked->vtable = LockedPrintStreamVtable + 2;
+    locked->target = reinterpret_cast<PrintStream*>(file);
+    dataFile.store(LockedFileData(), std::memory_order_release);
 }
 
 void WtfFilePrintStreamDestroy_nid_no_patch(Jsc::WtfAbi::FilePrintStream* stream) {
