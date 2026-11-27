@@ -1063,10 +1063,6 @@ int APS5_VABI _ZN3JSC29callHostFunctionAsConstructorEPNS_14JSGlobalObjectEPNS_9C
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3JSC2VM15dumpRegExpTraceEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN3JSC41DeferredStructureTransitionWatchpointFireC1ERNS_2VMEPNS_9StructureE() {
     NotImplemented_nid_no_patch(__func__);
 }
