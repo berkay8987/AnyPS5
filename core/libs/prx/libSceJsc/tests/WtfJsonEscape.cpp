@@ -102,7 +102,7 @@ void TestUnicodeEscapes() {
 
 void TestSixteenBit() {
     Require(Escape16(u"a\"\n") == "a\\\"\\n");
-    Require(Escape16(u"α￿") == "\\u03B1\\uFFFF");
+    Require(Escape16(std::u16string{char16_t{0x3B1}, char16_t{0xFFFF}}) =="\\u03B1\\uFFFF");
     Require(Escape16(u"\U0001F600") == "\\uD83D\\uDE00");
     const std::u16string lone{static_cast<char16_t>(0xDC00), u'x'};
     Require(Escape16(lone) == "\\uDC00x");
