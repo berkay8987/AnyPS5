@@ -494,6 +494,16 @@ if(BUILD_TESTING)
         set_tests_properties(guest_libc_internal_deleting_destructors PROPERTIES ENVIRONMENT_MODIFICATION
             "PATH=path_list_prepend:$<TARGET_FILE_DIR:libSceLibcInternal>")
     endif()
+    add_test_executable(guest_libc_internal_facet_tidy_tests ${LIBS_INCLUDE_DIR}/tests/GuestLibcInternalFacetTidy.cpp)
+    target_include_directories(guest_libc_internal_facet_tidy_tests PRIVATE ${LIBS_INCLUDE_DIR})
+    target_link_libraries(guest_libc_internal_facet_tidy_tests PRIVATE libSceLibcInternal libkernel libc)
+    configure_windows_unwind(guest_libc_internal_facet_tidy_tests)
+    add_test(NAME guest_libc_internal_facet_tidy COMMAND guest_libc_internal_facet_tidy_tests)
+    set_tests_properties(guest_libc_internal_facet_tidy PROPERTIES TIMEOUT 20)
+    if(WIN32)
+        set_tests_properties(guest_libc_internal_facet_tidy PROPERTIES ENVIRONMENT_MODIFICATION
+            "PATH=path_list_prepend:$<TARGET_FILE_DIR:libSceLibcInternal>")
+    endif()
     if(MINGW OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
         enable_language(ASM)
         add_test_executable(guest_libc_internal_libc_forwards_tests

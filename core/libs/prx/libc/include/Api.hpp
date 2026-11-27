@@ -748,6 +748,7 @@ StreamManipulator APS5_VABI _ZSt12setprecisioni_nid_postfix(std::int32_t precisi
 void APS5_VABI _ZNSt8ios_base7_AddstdEPS__nid_postfix(GuestLocale::IosBase* self);
 GuestLocale::Implementation* APS5_VABI _ZNSt6locale5_InitEv_nid_postfix();
 void APS5_VABI _ZNSt6locale5facet9_RegisterEv_nid_postfix(GuestLocale::Facet* self);
+void APS5_VABI FacetTidy_nid_no_patch();
 GuestLocale::Implementation* APS5_VABI _ZNSt6locale16_GetgloballocaleEv_nid_postfix();
 GuestLocaleFacade* APS5_VABI _ZNSt6locale7classicEv_nid_postfix();
 std::size_t APS5_VABI _ZNSt7collateIwE7_GetcatEPPKNSt6locale5facetEPKS1__nid_postfix(GuestLocale::Facet** facet, const GuestLocale::Implementation* const* locale);

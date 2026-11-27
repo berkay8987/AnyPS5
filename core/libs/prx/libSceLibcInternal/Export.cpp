@@ -691,9 +691,8 @@ float APS5_VABI _FXp_getw_nid_postfix(const float* parts, int count) {
     return first + (second + tail);
 }
 
-int APS5_VABI _Fac_tidy_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
-    return 0;
+void APS5_VABI _Fac_tidy_nid_postfix() {
+    FacetTidy_nid_no_patch();
 }
 
 int APS5_VABI _Fail_s_nid_postfix() {

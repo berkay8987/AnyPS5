@@ -1264,6 +1264,17 @@ void APS5_VABI _ZNSt6locale5facet9_RegisterEv_nid_postfix(GuestLocale::Facet* se
     g_registeredFacets.push_back(self);
 }
 
+void APS5_VABI FacetTidy_nid_no_patch() {
+    std::vector<GuestLocale::Facet*> facets;
+    {
+        std::lock_guard<std::mutex> lock(g_localeInitMutex);
+        facets.swap(g_registeredFacets);
+    }
+    for (auto facet = facets.rbegin(); facet != facets.rend(); ++facet) {
+        if (GuestLocale::Facet* released = (*facet)->vtable->release(*facet)) released->vtable->deleteObject(released);
+    }
+}
+
 GuestLocale::Implementation* APS5_VABI _ZNSt6locale16_GetgloballocaleEv_nid_postfix() {
     return g_globalLocale.load();
 }
