@@ -1268,6 +1268,11 @@ GuestLocale::Implementation* APS5_VABI _ZNSt6locale16_GetgloballocaleEv_nid_post
     return g_globalLocale.load();
 }
 
+void APS5_VABI LocaleSetGlobal_nid_no_patch(void* locale) {
+    if (locale == nullptr) throw std::invalid_argument("locale::_Setgloballocale: null locale");
+    g_globalLocale.store(static_cast<GuestLocale::Implementation*>(locale));
+}
+
 namespace {
 
 constexpr std::int64_t SceV2StandardStreamSlots = 8;

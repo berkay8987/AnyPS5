@@ -282,8 +282,8 @@ void APS5_VABI libSceLibcInternalInventory_072_nid_no_patch(void* self) {
 }
 APS5_EXPORT("57mMrw0l-40", libSceLibcInternalInventory_072_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_073_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_073_nid_no_patch(void* locale) {
+    LocaleSetGlobal_nid_no_patch(locale);
 }
 APS5_EXPORT("1TaQLyPDJEY", libSceLibcInternalInventory_073_nid_no_patch);
 
