@@ -1427,10 +1427,6 @@ int APS5_VABI _ZN3WTF14AtomStringImpl3addEPKh() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3WTF14FileSystemImpl17openTemporaryFileERKNS_6StringERiS3_() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN3WTF14FileSystemImpl24pathByAppendingComponentERKNS_6StringES3_() {
     NotImplemented_nid_no_patch(__func__);
 }

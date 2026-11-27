@@ -189,7 +189,6 @@ int APS5_VABI _ZN3WTF11Persistence5CoderINS_10AtomStringEE6decodeERNS0_7DecoderE
 int APS5_VABI _ZN3WTF11emptyStringEv();
 int APS5_VABI _ZN3WTF14AtomStringImpl3addEPKDs();
 int APS5_VABI _ZN3WTF14AtomStringImpl3addEPKh();
-int APS5_VABI _ZN3WTF14FileSystemImpl17openTemporaryFileERKNS_6StringERiS3_();
 int APS5_VABI _ZN3WTF14FileSystemImpl24pathByAppendingComponentERKNS_6StringES3_();
 int APS5_VABI _ZN3WTF17PrivateSymbolImpl16createNullSymbolEv();
 int APS5_VABI _ZN3WTF17TextBreakIteratorC1ENS_10StringViewENS0_4ModeERKNS_10AtomStringE();
