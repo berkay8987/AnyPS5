@@ -21,6 +21,7 @@
 #include "prx/libSceJsc/include/ScriptCallArgumentHandlerExports.hpp"
 #include "prx/libSceJsc/include/WtfCpuTimeExports.hpp"
 #include "prx/libSceJsc/include/WtfDataLogExports.hpp"
+#include "prx/libSceJsc/include/WtfDefaultLanguageExports.hpp"
 #include "prx/libSceJsc/include/WtfFileSystemExports.hpp"
 #include "prx/libSceJsc/include/WtfHelperExports.hpp"
 #include "prx/libSceJsc/include/WtfLoggerExports.hpp"

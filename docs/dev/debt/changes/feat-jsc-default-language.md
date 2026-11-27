@@ -1,0 +1,5 @@
+# libSceJsc
+
+## add Functional
+
+- [WTF::defaultLanguage](../../../core/libs/prx/libSceJsc/src/WtfDefaultLanguage.cpp) (libSceJsc) - not compared with a console module; its signature, from the older NID name database, is unverified. It follows pinned [Language.cpp](https://github.com/WebKit/WebKit/blob/c55364d53f971f63a709976f168d932d558b8909/Source/WTF/wtf/Language.cpp#L71-L120) and [LanguagePlayStation.cpp](https://github.com/WebKit/WebKit/blob/c55364d53f971f63a709976f168d932d558b8909/Source/WTF/wtf/playstation/LanguagePlayStation.cpp#L32-L41): libScePosixForWebKit `getenv_np("SYSTEM_LANGUAGE")` into a 16-byte buffer, the value as an 8-bit string, or an empty string when it is unset. libSceJsc exports no `overrideUserPreferredLanguages`, so the override list WebKit checks first is always empty here; libSceNKWebKit's override does not reach it. The empty result is allocated, not WebKit's static empty string. A value of 16 bytes or more throws, as `getenv_np` does. Closes when: compared with a console module.

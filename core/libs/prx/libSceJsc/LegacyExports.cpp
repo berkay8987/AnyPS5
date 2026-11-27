@@ -200,10 +200,6 @@ int APS5_VABI _ZN9Inspector20DOMBackendDispatcher10removeNodeElON3WTF6RefPtrINS1
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3WTF15defaultLanguageEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN9Inspector20DOMBackendDispatcher14highlightFrameElON3WTF6RefPtrINS1_8JSONImpl6ObjectENS1_13DumbPtrTraitsIS4_EEEE() {
     NotImplemented_nid_no_patch(__func__);
 }
