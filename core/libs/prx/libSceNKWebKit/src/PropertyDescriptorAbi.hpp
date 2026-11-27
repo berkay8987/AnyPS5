@@ -56,7 +56,8 @@ enum PropertyAttribute : std::uint32_t {
     ReadOnly = 1u << 1,
     DontEnum = 1u << 2,
     DontDelete = 1u << 3,
-    Accessor = 1u << 4
+    Accessor = 1u << 4,
+    CustomValue = 1u << 6
 };
 
 enum PropertyDescriptorPresent : std::uint32_t {
@@ -66,6 +67,9 @@ enum PropertyDescriptorPresent : std::uint32_t {
 };
 
 constexpr std::uint64_t EncodedJSUndefined = 0x2 | 0x8;
+constexpr std::uint64_t NotCellMask = 0xfffe000000000000ull | 0x2;
+constexpr std::size_t CellTypeOffset = 5;
+constexpr std::uint8_t GetterSetterType = 5;
 
 struct PropertyDescriptor {
     std::uint64_t value;

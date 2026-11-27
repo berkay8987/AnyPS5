@@ -143,4 +143,20 @@ void APS5_VABI _ZN3JSC18PropertyDescriptor9setSetterENS_7JSValueE(PropertyDescri
     SetAccessor(self, &PropertyDescriptor::setter, setter, __func__);
 }
 
+void APS5_VABI _ZN3JSC18PropertyDescriptor13setDescriptorENS_7JSValueEj(PropertyDescriptor* self, std::uint64_t value, std::uint32_t attributes) {
+    if (value == 0) throw std::invalid_argument("JSC::PropertyDescriptor::setDescriptor: empty JSValue");
+    auto descriptor = Load(self, __func__);
+    if (!(value & NKWebKit::JscAbi::NotCellMask)) {
+        std::uint8_t type = 0;
+        if (!GuestCopyIn_nid_no_patch(&type, reinterpret_cast<const void*>(value + NKWebKit::JscAbi::CellTypeOffset), sizeof(type)))
+            throw std::invalid_argument("JSC::PropertyDescriptor::setDescriptor: unreadable cell");
+        if (type == NKWebKit::JscAbi::GetterSetterType)
+            NotImplemented_nid_no_patch("JSC::PropertyDescriptor::setDescriptor: a GetterSetter value needs GetterSetter::isGetterNull");
+    }
+    descriptor.attributes = attributes & ~static_cast<std::uint32_t>(NKWebKit::JscAbi::CustomValue);
+    descriptor.value = value;
+    descriptor.seenAttributes = NKWebKit::JscAbi::EnumerablePresent | NKWebKit::JscAbi::ConfigurablePresent | NKWebKit::JscAbi::WritablePresent;
+    Store(self, descriptor, __func__);
+}
+
 }
