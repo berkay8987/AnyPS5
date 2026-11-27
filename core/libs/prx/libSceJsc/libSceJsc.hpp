@@ -10,6 +10,7 @@
 #include "prx/libSceJsc/include/InspectorEnumParsingExports.hpp"
 #include "prx/libSceJsc/include/Api.hpp"
 #include "prx/libSceJsc/include/ContentSearchUtilitiesExports.hpp"
+#include "prx/libSceJsc/include/ConsoleMessageExports.hpp"
 #include "prx/libSceJsc/include/WtfBase64Exports.hpp"
 #include "prx/libSceJsc/include/WtfSha1Exports.hpp"
 #include "prx/libSceJsc/include/InventoryExports.hpp"
