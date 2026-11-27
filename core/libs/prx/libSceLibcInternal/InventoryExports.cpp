@@ -14,6 +14,18 @@
 
 namespace {
 
+void ConstructWideNumPut(GuestLocale::Facet* self, std::size_t refs) {
+    GuestLocale::LocinfoStorage info{};
+    _ZNSt8_LocinfoC1EPKc_nid_postfix(&info, "C");
+    try {
+        _ZNSt7num_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwEEEC2ERKSt8_Locinfom_nid_postfix(self, &info, refs);
+    } catch (...) {
+        _ZNSt8_LocinfoD1Ev_nid_postfix(&info);
+        throw;
+    }
+    _ZNSt8_LocinfoD1Ev_nid_postfix(&info);
+}
+
 std::mutex standardStreamInitMutex;
 int narrowStreamInitCount = -1;
 int wideStreamInitCount = -1;
@@ -540,13 +552,13 @@ void APS5_VABI libSceLibcInternalInventory_133_nid_no_patch(void* self, const vo
 }
 APS5_EXPORT("Ky+C-qbKcX0", libSceLibcInternalInventory_133_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_134_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_134_nid_no_patch(GuestLocale::Facet* self, std::size_t refs) {
+    ConstructWideNumPut(self, refs);
 }
 APS5_EXPORT("xdHqQoggdfo", libSceLibcInternalInventory_134_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_135_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_135_nid_no_patch(GuestLocale::Facet* self, std::size_t refs) {
+    ConstructWideNumPut(self, refs);
 }
 APS5_EXPORT("f1ZGLUnQGgo", libSceLibcInternalInventory_135_nid_no_patch);
 

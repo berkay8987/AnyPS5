@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "prx/libc/include/GuestLocale.hpp"
 #include "SceTypes.hpp"
 #include <streambuf>
 
@@ -112,8 +113,8 @@ int APS5_VABI libSceLibcInternalInventory_130_nid_no_patch();
 void APS5_VABI libSceLibcInternalInventory_131_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_132_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_133_nid_no_patch(void* self, const void* info, std::size_t refs);
-int APS5_VABI libSceLibcInternalInventory_134_nid_no_patch();
-int APS5_VABI libSceLibcInternalInventory_135_nid_no_patch();
+void APS5_VABI libSceLibcInternalInventory_134_nid_no_patch(GuestLocale::Facet* self, std::size_t refs);
+void APS5_VABI libSceLibcInternalInventory_135_nid_no_patch(GuestLocale::Facet* self, std::size_t refs);
 void APS5_VABI libSceLibcInternalInventory_136_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_137_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_138_nid_no_patch(void* self);
