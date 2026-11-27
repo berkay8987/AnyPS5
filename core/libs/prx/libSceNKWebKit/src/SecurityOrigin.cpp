@@ -171,6 +171,7 @@
 #include "prx/libSceNKWebKit/include/PublicSuffixExports.hpp"
 #include "prx/libSceNKWebKit/include/SecurityOriginExports.hpp"
 #include "prx/libSceNKWebKit/include/UrlHelpers.hpp"
+#include "prx/libSceNKWebKit/include/UrlParserExports.hpp"
 #include "prx/libSceNKWebKit/include/WebCoreExports.hpp"
 #include "prx/libSceNKWebKit/include/WtfExports.hpp"
 #include "prx/libSceNKWebKit/include/WtfValueExports.hpp"
@@ -549,6 +550,23 @@ bool APS5_VABI _ZN7WebCore14SecurityOrigin30isLocalHostOrLoopbackIPAddressEN3WTF
 
 OriginRef APS5_VABI _ZN7WebCore14SecurityOrigin6createERKN3WTF3URLE(const URL* url) {
     return CreateFromURL(Checked(url), __func__);
+}
+
+OriginRef APS5_VABI _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(const String* protocol, const String* host, const NKWebKit::WebCoreAbi::LegacyOriginPort* port) {
+    if (!protocol || !host || !port) throw std::invalid_argument("WebCore::SecurityOrigin::create: null argument");
+    const NKWebKit::WebCoreAbi::LegacyOriginPort requestedPort = *port;
+    const String text = Concatenate({ViewOf(*protocol), Literal("://"), ViewOf(*host), Literal("/")});
+    const URL base{};
+    URL url{};
+    _ZN3WTF3URLC2ERKS0_RKNS_6StringEPKNS_15URLTextEncodingE(&url, &base, &text, nullptr);
+    const String owner(url.impl);
+    OriginRef origin = CreateFromURL(url, __func__);
+    if (requestedPort.engaged && !IsOpaque(origin.get()->data)) {
+        const auto view = ViewOf(*protocol);
+        if (!_ZN3WTF24isDefaultPortForProtocolEtNS_10StringViewE(requestedPort.value, {view.data, view.length, view.is8Bit}))
+            origin.get()->data.storage.tuple.port = {requestedPort.value, true};
+    }
+    return origin;
 }
 
 OriginRef APS5_VABI _ZN7WebCore14SecurityOrigin12createUniqueEv() {

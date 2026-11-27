@@ -646,10 +646,6 @@ int APS5_VABI _ZN7WebCore11JSImageDataC1EPN3JSC9StructureERNS_17JSDOMGlobalObjec
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN7WebCore5Frame4initEv() {
     NotImplemented_nid_no_patch(__func__);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceTypes.hpp"
+#include "prx/libSceNKWebKit/src/LegacySecurityOriginTupleAbi.hpp"
 #include "prx/libSceNKWebKit/src/MediaTypes.hpp"
 #include "prx/libSceNKWebKit/src/SecurityOriginAbi.hpp"
 #include "prx/libSceNKWebKit/src/WtfStringAbi.hpp"
@@ -10,6 +11,7 @@ extern "C" {
 bool APS5_VABI _ZN7WebCore14SecurityOrigin30isLocalHostOrLoopbackIPAddressEN3WTF10StringViewE(NKWebKit::WtfAbi::StringView host);
 WebCore::Ref<NKWebKit::WebCoreAbi::SecurityOrigin> APS5_VABI _ZN7WebCore14SecurityOrigin6createERKN3WTF3URLE(const NKWebKit::WtfAbi::URL* url);
 WebCore::Ref<NKWebKit::WebCoreAbi::SecurityOrigin> APS5_VABI _ZN7WebCore14SecurityOrigin12createUniqueEv();
+WebCore::Ref<NKWebKit::WebCoreAbi::SecurityOrigin> APS5_VABI _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(const NKWebKit::WtfAbi::String* protocol, const NKWebKit::WtfAbi::String* host, const NKWebKit::WebCoreAbi::LegacyOriginPort* port);
 NKWebKit::WtfAbi::String APS5_VABI _ZNK7WebCore14SecurityOrigin8toStringEv(const NKWebKit::WebCoreAbi::SecurityOrigin* self);
 NKWebKit::WtfAbi::String APS5_VABI _ZNK7WebCore14SecurityOrigin11toRawStringEv(const NKWebKit::WebCoreAbi::SecurityOrigin* self);
 WebCore::Ref<NKWebKit::WebCoreAbi::SecurityOrigin> APS5_VABI _ZNK7WebCore14SecurityOrigin12isolatedCopyEv(const NKWebKit::WebCoreAbi::SecurityOrigin* self);
