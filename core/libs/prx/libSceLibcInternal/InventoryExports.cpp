@@ -630,8 +630,8 @@ void APS5_VABI libSceLibcInternalInventory_160_nid_no_patch(void* self) {
 }
 APS5_EXPORT("I-e7Dxo087A", libSceLibcInternalInventory_160_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_161_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_161_nid_no_patch(GuestLocale::NumpunctFacet* self, const GuestLocale::LocinfoStorage* locinfo, bool isDefault) {
+    NumpunctInit_nid_no_patch(self, locinfo, isDefault);
 }
 APS5_EXPORT("1LvbNeZZJ-o", libSceLibcInternalInventory_161_nid_no_patch);
 
@@ -640,23 +640,23 @@ void APS5_VABI libSceLibcInternalInventory_162_nid_no_patch(void* self) {
 }
 APS5_EXPORT("fFnht9SPed8", libSceLibcInternalInventory_162_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_163_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_163_nid_no_patch(GuestLocale::NumpunctFacet* self, const GuestLocale::LocinfoStorage* locinfo, std::size_t references, bool isDefault) {
+    NumpunctConstructFromLocinfo_nid_no_patch(self, locinfo, references, isDefault);
 }
 APS5_EXPORT("CDm+TUClE7E", libSceLibcInternalInventory_163_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_164_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_164_nid_no_patch(GuestLocale::NumpunctFacet* self, std::size_t references) {
+    NumpunctConstruct_nid_no_patch(self, references);
 }
 APS5_EXPORT("TEtyeXjcZ0w", libSceLibcInternalInventory_164_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_165_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_165_nid_no_patch(GuestLocale::NumpunctFacet* self, const char* name, std::size_t references, bool isDefault) {
+    NumpunctConstructNamed_nid_no_patch(self, name, references, isDefault);
 }
 APS5_EXPORT("yIn4l8OO1zA", libSceLibcInternalInventory_165_nid_no_patch);
 
-int APS5_VABI libSceLibcInternalInventory_166_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_166_nid_no_patch(GuestLocale::NumpunctFacet* self, std::size_t references) {
+    NumpunctConstruct_nid_no_patch(self, references);
 }
 APS5_EXPORT("1eVdDzPtzD4", libSceLibcInternalInventory_166_nid_no_patch);
 

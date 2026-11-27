@@ -53,9 +53,8 @@ void APS5_VABI _ZNSt7codecvtIwc9_MbstatetED0Ev_nid_postfix(void* self) {
     _ZdlPv_nid_postfix(self);
 }
 
-int APS5_VABI _ZNSt8numpunctIcEC1EPKcmb_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
-    return 0;
+void APS5_VABI _ZNSt8numpunctIcEC1EPKcmb_nid_postfix(GuestLocale::NumpunctFacet* self, const char* name, std::size_t references, bool isDefault) {
+    NumpunctConstructNamed_nid_no_patch(self, name, references, isDefault);
 }
 
 int APS5_VABI sceLibcInternalUnknown6_025_jerxcj2Xnbg_nid_no_patch() {
@@ -441,9 +440,8 @@ int APS5_VABI _ZNSt9money_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwEEEC2ER
     return 0;
 }
 
-int APS5_VABI _ZNSt8numpunctIcEC2ERKSt8_Locinfomb_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
-    return 0;
+void APS5_VABI _ZNSt8numpunctIcEC2ERKSt8_Locinfomb_nid_postfix(GuestLocale::NumpunctFacet* self, const GuestLocale::LocinfoStorage* locinfo, std::size_t references, bool isDefault) {
+    NumpunctConstructFromLocinfo_nid_no_patch(self, locinfo, references, isDefault);
 }
 
 int APS5_VABI sceLibcInternalUnknown6_147_zTX7LLpw12Q_nid_no_patch() {

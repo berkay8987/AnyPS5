@@ -1,9 +1,11 @@
 #include "prx/libSceLibcInternal/include/Api.hpp"
 #include "prx/libSceLibcInternal/include/InventoryExports.hpp"
+#include "prx/libSceLibcInternal/include/InventoryExports6.hpp"
 #include "prx/libSceLibcInternal/include/RecoveredInventory.hpp"
 #include "prx/libkernel/Pthread/include/Mutex.hpp"
 #include "prx/libc/include/Api.hpp"
 #include "prx/libc/include/ApplicationHeap.hpp"
+#include "prx/libc/include/GuestLocale.hpp"
 #include "prx/libc/include/general/VabiMacros.hpp"
 #include <array>
 #include <cstddef>
@@ -29,6 +31,7 @@ extern const TypeRecord _ZTISt13runtime_error_nid_postfix;
 extern const TypeRecord _ZTISt14overflow_error_nid_postfix;
 extern const TypeRecord _ZTISt12system_error_nid_postfix;
 extern const void* const _ZTVSt18bad_variant_access_nid_postfix[5];
+extern std::uintptr_t _ZTVSt8numpunctIcE_nid_postfix[11];
 
 void APS5_VABI SceV2Catch(Thrower thrower, const void* argument);
 int APS5_VABI libSceLibcInternalInventory_275_nid_no_patch(const void* table);
@@ -151,6 +154,75 @@ void CheckFacetDeletingDestructors() {
         lastReleased = nullptr;
         destructor(allocated);
         Require(releases == 1 && lastReleased == allocated, label);
+    }
+}
+
+struct NumpunctLocinfo {
+    NumpunctLocinfo() { _ZNSt8_LocinfoC1EPKc_nid_postfix(&storage, "C"); }
+    ~NumpunctLocinfo() { _ZNSt8_LocinfoD1Ev_nid_postfix(&storage); }
+    GuestLocale::LocinfoStorage storage{};
+};
+
+bool ConstructedNumpunct(const GuestLocale::NumpunctFacet& facet, std::uint32_t references, char thousandsSep) {
+    return facet.base.vtable == reinterpret_cast<const GuestLocale::FacetVtable*>(&_ZTVSt8numpunctIcE_nid_postfix[2])
+        && facet.base.references == references && facet.decimalPoint == '.' && facet.thousandsSep == thousandsSep
+        && facet.grouping != nullptr && std::strcmp(facet.grouping, "") == 0 && facet.falsename != nullptr
+        && std::strcmp(facet.falsename, "false") == 0 && facet.truename != nullptr && std::strcmp(facet.truename, "true") == 0;
+}
+
+void CheckNumpunctConstructors() {
+    using CurrentConstructor = void (APS5_VABI *)(GuestLocale::NumpunctFacet*, std::size_t);
+    for (const CurrentConstructor construct : {libSceLibcInternalInventory_164_nid_no_patch, libSceLibcInternalInventory_166_nid_no_patch}) {
+        GuestLocale::NumpunctFacet facet{};
+        construct(&facet, 0x100000007);
+        Require(ConstructedNumpunct(facet, 7, ','), "numpunct<char>(size_t) builds the C facet with the truncated reference count");
+        NumpunctDestroy_nid_no_patch(&facet);
+    }
+
+    const NumpunctLocinfo locinfo;
+    using LocinfoConstructor = void (APS5_VABI *)(GuestLocale::NumpunctFacet*, const GuestLocale::LocinfoStorage*, std::size_t, bool);
+    for (const LocinfoConstructor construct : {libSceLibcInternalInventory_163_nid_no_patch, _ZNSt8numpunctIcEC2ERKSt8_Locinfomb_nid_postfix}) {
+        for (const bool isDefault : {false, true}) {
+            GuestLocale::NumpunctFacet facet{};
+            construct(&facet, &locinfo.storage, 3, isDefault);
+            Require(ConstructedNumpunct(facet, 3, isDefault ? ',' : ' '), "numpunct<char>(const _Locinfo&, size_t, bool) reads the C conventions");
+            NumpunctDestroy_nid_no_patch(&facet);
+        }
+        bool rejected = false;
+        try {
+            construct(nullptr, &locinfo.storage, 0, false);
+        } catch (const std::invalid_argument&) {
+            rejected = true;
+        }
+        Require(rejected, "numpunct<char>(const _Locinfo&, size_t, bool) rejects a null facet");
+    }
+
+    using NamedConstructor = void (APS5_VABI *)(GuestLocale::NumpunctFacet*, const char*, std::size_t, bool);
+    for (const NamedConstructor construct : {libSceLibcInternalInventory_165_nid_no_patch, _ZNSt8numpunctIcEC1EPKcmb_nid_postfix}) {
+        for (const bool isDefault : {false, true}) {
+            GuestLocale::NumpunctFacet facet{};
+            construct(&facet, "C", 2, isDefault);
+            Require(ConstructedNumpunct(facet, 2, isDefault ? ',' : ' '), "numpunct<char>(const char*, size_t, bool) builds the named C facet");
+            NumpunctDestroy_nid_no_patch(&facet);
+        }
+        GuestLocale::NumpunctFacet facet{};
+        bool rejected = false;
+        try {
+            construct(&facet, "fr_FR", 0, false);
+        } catch (const std::invalid_argument&) {
+            rejected = true;
+        }
+        Require(rejected, "numpunct<char>(const char*, size_t, bool) rejects a locale it does not provide");
+    }
+
+    for (const bool isDefault : {false, true}) {
+        GuestLocale::NumpunctFacet facet{};
+        facet.base.references = 0x55;
+        libSceLibcInternalInventory_161_nid_no_patch(&facet, &locinfo.storage, isDefault);
+        Require(facet.base.vtable == nullptr && facet.base.references == 0x55, "numpunct<char>::_Init leaves the facet header alone");
+        Require(facet.decimalPoint == '.' && facet.thousandsSep == (isDefault ? ',' : ' '), "numpunct<char>::_Init reads the C conventions");
+        Require(facet.truename != nullptr && std::strcmp(facet.truename, "true") == 0, "numpunct<char>::_Init copies the bool names");
+        NumpunctDestroy_nid_no_patch(&facet);
     }
 }
 
@@ -315,6 +387,7 @@ int main() {
     CheckErrno();
     CheckNewSetup();
     CheckFilesystemErrorTwoPaths();
+    CheckNumpunctConstructors();
 
     if (failures != 0) return 1;
     std::puts("libc internal libc forward checks passed");

@@ -11,7 +11,7 @@ std::size_t APS5_VABI _ZNSt7num_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwE
 int APS5_VABI _ZNSt13basic_filebufIcSt11char_traitsIcEE9underflowEv_nid_postfix();
 int APS5_VABI _ZNSt13basic_filebufIcSt11char_traitsIcEE9_EndwriteEv_nid_postfix();
 void APS5_VABI _ZNSt7codecvtIwc9_MbstatetED0Ev_nid_postfix(void* self);
-int APS5_VABI _ZNSt8numpunctIcEC1EPKcmb_nid_postfix();
+void APS5_VABI _ZNSt8numpunctIcEC1EPKcmb_nid_postfix(GuestLocale::NumpunctFacet* self, const char* name, std::size_t references, bool isDefault);
 int APS5_VABI _ZNSt13basic_filebufIwSt11char_traitsIwEE9_EndwriteEv_nid_postfix();
 std::size_t APS5_VABI _ZNSt7num_getIcSt19istreambuf_iteratorIcSt11char_traitsIcEEE7_GetcatEPPKNSt6locale5facetEPKS5__nid_postfix(GuestLocale::Facet** facet, const GuestLocale::Implementation* const* locale);
 void APS5_VABI _ZNSt10moneypunctIwLb1EED0Ev_nid_postfix(void* self);
@@ -49,6 +49,6 @@ void APS5_VABI _ZNSt6_WinitD2Ev_nid_postfix(void* self);
 void APS5_VABI _ZNSt6_WinitD1Ev_nid_postfix(void* self);
 int APS5_VABI _ZSt9_LStrcollIcEiPKT_S2_S2_S2_PKSt8_Collvec_nid_postfix(const char* first1, const char* last1, const char* first2, const char* last2, const void* collvec);
 int APS5_VABI _ZNSt9money_putIwSt19ostreambuf_iteratorIwSt11char_traitsIwEEEC2ERKSt8_Locinfom_nid_postfix();
-int APS5_VABI _ZNSt8numpunctIcEC2ERKSt8_Locinfomb_nid_postfix();
+void APS5_VABI _ZNSt8numpunctIcEC2ERKSt8_Locinfomb_nid_postfix(GuestLocale::NumpunctFacet* self, const GuestLocale::LocinfoStorage* locinfo, std::size_t references, bool isDefault);
 
 }
