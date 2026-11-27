@@ -347,10 +347,6 @@ int APS5_VABI _ZN3JSC7Options24ensureOptionsAreCoherentEv() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN9Inspector14InspectorAgentnaEm() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN9Inspector24ConsoleBackendDispatcherD0Ev() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -432,10 +428,6 @@ int APS5_VABI _ZN3JSC17checkModuleSyntaxEPNS_14JSGlobalObjectERKNS_10SourceCodeE
 }
 
 int APS5_VABI _ZN9Inspector14InspectorAgentD1Ev() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN9Inspector22InspectorDebuggerAgentnaEm() {
     NotImplemented_nid_no_patch(__func__);
 }
 
