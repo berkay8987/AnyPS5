@@ -7121,10 +7121,6 @@ int APS5_VABI _ZN7WebCore26ThreadableWebSocketChannel23webSocketConnectRequestER
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZNK7WebCore17NowPlayingManager15supportsSeekingEv() {
     NotImplemented_nid_no_patch(__func__);
 }

@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <stdexcept>
+#include <string>
 
 static void Check(bool value, int line) {
     if (!value) {
@@ -276,6 +277,72 @@ static bool ThrowsNotImplemented(F function) {
     return false;
 }
 
+static NKWebKit::WtfAbi::TextStream NewStream() {
+    NKWebKit::WtfAbi::StringBuilder builder{NKWebKit::WtfAbi::String()};
+    builder.shouldCrashOnOverflow = true;
+    builder.is8Bit = true;
+    NKWebKit::WtfAbi::TextStream stream{builder};
+    stream.formattingFlags = 0;
+    stream.multiLineMode = false;
+    stream.indent = 0;
+    return stream;
+}
+
+static std::string Release(NKWebKit::WtfAbi::TextStream& stream) {
+    NKWebKit::WtfAbi::String released = _ZN3WTF10TextStream7releaseEv(&stream);
+    std::string result;
+    if (!released.impl) return result;
+    const auto view = NKWebKit::WtfAbi::ViewOf(released.impl);
+    for (unsigned index = 0; index < view.length; ++index) result.push_back(static_cast<char>(NKWebKit::WtfAbi::CodeUnitAt(view, index)));
+    return result;
+}
+
+static std::string Dump(const WebCore::PerspectiveTransformOperation& op, const char* prefix = nullptr) {
+    NKWebKit::WtfAbi::TextStream stream = NewStream();
+    if (prefix) _ZN3WTF10TextStreamlsEPKc(&stream, prefix);
+    _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE(&op, &stream);
+    return Release(stream);
+}
+
+static void TestDump() {
+    using Type = WebCore::LegacyLengthType;
+    Require(Dump(Make(Legacy(500, Type::Fixed))) == "perspective(500px)");
+    Require(Dump(Make(Legacy(500, Type::Fixed, true))) == "perspective(500px has-quirk)");
+    Require(Dump(Make(Legacy(-7, Type::Fixed))) == "perspective(-7px)");
+    Require(Dump(Make(FloatLength(12.5f, Type::Fixed))) == "perspective(12.50px)");
+    Require(Dump(Make(FloatLength(-2.25f, Type::Fixed))) == "perspective(-2.25px)");
+    Require(Dump(Make(FloatLength(3.00001f, Type::Fixed))) == "perspective(3px)");
+    Require(Dump(Make(FloatLength(3e9f, Type::Fixed))) == "perspective(3000000000.00px)");
+    Require(Dump(Make(Legacy(50, Type::Percent))) == "perspective(50%)");
+    Require(Dump(Make(FloatLength(33.5f, Type::Percent))) == "perspective(33.50%)");
+    Require(Dump(Make(Legacy(0, Type::Auto))) == "perspective(auto)");
+    Require(Dump(Make(Legacy(9, Type::Undefined, true))) == "perspective(undefined has-quirk)");
+    Require(Dump(Make(Legacy(3, Type::Relative))) == "perspective(relative 3)");
+    Require(Dump(Make(Legacy(4, Type::Intrinsic))) == "perspective(intrinsic 4)");
+    Require(Dump(Make(Legacy(5, Type::MinIntrinsic))) == "perspective(min-intrinsic 5)");
+    Require(Dump(Make(Legacy(6, Type::MinContent))) == "perspective(min-content 6)");
+    Require(Dump(Make(Legacy(7, Type::MaxContent))) == "perspective(max-content 7)");
+    Require(Dump(Make(FloatLength(1.5f, Type::FillAvailable))) == "perspective(fill-available 1.50)");
+    Require(Dump(Make(Legacy(8, Type::FitContent))) == "perspective(fit-content 8)");
+    Require(Dump(Make(Legacy(500, Type::Fixed)), "a ") == "a perspective(500px)");
+    {
+        NKWebKit::WtfAbi::TextStream stream = NewStream();
+        stream.formattingFlags = 1U << 1;
+        const auto op = Make(FloatLength(12.5f, Type::Fixed));
+        _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE(&op, &stream);
+        Require(Release(stream) == "perspective(12.50px)");
+    }
+    const auto calculated = Make(Legacy(1, Type::Calculated));
+    Require(ThrowsNotImplemented([&] { Dump(calculated); }));
+    const auto wrongType = Make(Legacy(500, Type::Fixed), 5);
+    Require(ThrowsInvalidArgument([&] { Dump(wrongType); }));
+    const auto valid = Make(Legacy(1, Type::Fixed));
+    Require(ThrowsInvalidArgument([&] { _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE(&valid, nullptr); }));
+    NKWebKit::WtfAbi::TextStream stream = NewStream();
+    Require(ThrowsInvalidArgument([&] { _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE(nullptr, &stream); }));
+    Require(Release(stream).empty());
+}
+
 static void TestLifecycle() {
     const WebCore::LegacyLength fixed = Legacy(500, WebCore::LegacyLengthType::Fixed, true);
     WebCore::PerspectiveTransformOperation* created = reinterpret_cast<WebCore::PerspectiveTransformOperation*>(std::uintptr_t{0x1234});
@@ -311,7 +378,12 @@ static void TestLifecycle() {
 
     WebCore::LegacyTransformOperation* blended = nullptr;
     Require(ThrowsNotImplemented([&] { slots.blend(&blended, created, nullptr, 0.5, false); }));
-    Require(ThrowsNotImplemented([&] { slots.dump(created, nullptr); }));
+    Require(ThrowsInvalidArgument([&] { slots.dump(created, nullptr); }));
+    {
+        NKWebKit::WtfAbi::TextStream stream = NewStream();
+        slots.dump(created, &stream);
+        Require(Release(stream) == "perspective(500px has-quirk)");
+    }
 
     slots.completeDestructor(copy);
     Require(copy->m_base.m_type == PerspectiveType && std::memcmp(&copy->m_p, &fixed, sizeof(fixed)) == 0);
@@ -368,5 +440,6 @@ int main() {
     TestEquality();
     TestLegacyByteLayout();
     TestLifecycle();
+    TestDump();
     return 0;
 }

@@ -90,6 +90,57 @@ float PerspectiveValue(const WebCore::PerspectiveTransformOperation* self) {
 
 constexpr std::uint32_t PerspectiveOperationType = 19;
 
+const char* LengthTypeName(LegacyLengthType type) {
+    switch (type) {
+    case LegacyLengthType::Auto: return "auto";
+    case LegacyLengthType::Relative: return "relative";
+    case LegacyLengthType::Percent: return "percent";
+    case LegacyLengthType::Fixed: return "fixed";
+    case LegacyLengthType::Intrinsic: return "intrinsic";
+    case LegacyLengthType::MinIntrinsic: return "min-intrinsic";
+    case LegacyLengthType::MinContent: return "min-content";
+    case LegacyLengthType::MaxContent: return "max-content";
+    case LegacyLengthType::FillAvailable: return "fill-available";
+    case LegacyLengthType::FitContent: return "fit-content";
+    case LegacyLengthType::Calculated: return "calc";
+    case LegacyLengthType::Undefined: return "undefined";
+    }
+    throw std::invalid_argument("invalid WebCore length type");
+}
+
+void DumpLength(NKWebKit::WtfAbi::TextStream& stream, const LegacyLength& length) {
+    switch (length.m_type) {
+    case LegacyLengthType::Auto:
+    case LegacyLengthType::Undefined:
+        NKWebKit::WtfAbi::AppendCString(stream.text, LengthTypeName(length.m_type));
+        break;
+    case LegacyLengthType::Fixed:
+        NKWebKit::WtfAbi::AppendRespectingIntegers(stream, LengthValue(length));
+        NKWebKit::WtfAbi::AppendCString(stream.text, "px");
+        break;
+    case LegacyLengthType::Relative:
+    case LegacyLengthType::Intrinsic:
+    case LegacyLengthType::MinIntrinsic:
+    case LegacyLengthType::MinContent:
+    case LegacyLengthType::MaxContent:
+    case LegacyLengthType::FillAvailable:
+    case LegacyLengthType::FitContent:
+        NKWebKit::WtfAbi::AppendCString(stream.text, LengthTypeName(length.m_type));
+        NKWebKit::WtfAbi::AppendCString(stream.text, " ");
+        NKWebKit::WtfAbi::AppendRespectingIntegers(stream, LengthValue(length));
+        break;
+    case LegacyLengthType::Percent:
+        NKWebKit::WtfAbi::AppendRespectingIntegers(stream, LengthValue(length));
+        NKWebKit::WtfAbi::AppendCString(stream.text, "%");
+        break;
+    case LegacyLengthType::Calculated:
+        NotImplemented_nid_no_patch("WebCore::operator<<(WTF::TextStream&, WebCore::Length): calculated length");
+    default:
+        throw std::invalid_argument("invalid WebCore length type");
+    }
+    if (length.m_hasQuirk) NKWebKit::WtfAbi::AppendCString(stream.text, " has-quirk");
+}
+
 struct OperationVtable {
     void (APS5_VABI* completeDestructor)(WebCore::PerspectiveTransformOperation*);
     void (APS5_VABI* deletingDestructor)(WebCore::PerspectiveTransformOperation*);
@@ -100,7 +151,7 @@ struct OperationVtable {
     int (APS5_VABI* blend)();
     bool (APS5_VABI* isAffectedByTransformOrigin)(const WebCore::PerspectiveTransformOperation*);
     bool (APS5_VABI* isRepresentableIn2D)(const WebCore::PerspectiveTransformOperation*);
-    int (APS5_VABI* dump)();
+    void (APS5_VABI* dump)(const WebCore::PerspectiveTransformOperation*, NKWebKit::WtfAbi::TextStream*);
 };
 
 struct OperationVtableStorage {
@@ -210,6 +261,16 @@ LegacyLength* APS5_VABI _ZNK7WebCore29PerspectiveTransformOperation11perspective
 bool APS5_VABI _ZNK7WebCore29PerspectiveTransformOperation5applyERNS_20TransformationMatrixERKNS_9FloatSizeE(const WebCore::PerspectiveTransformOperation* self, WebCore::TransformationMatrix& transform, const WebCore::FloatSize&) {
     _ZN7WebCore20TransformationMatrix16applyPerspectiveEd(&transform, PerspectiveValue(self));
     return false;
+}
+
+void APS5_VABI _ZNK7WebCore29PerspectiveTransformOperation4dumpERN3WTF10TextStreamE(const WebCore::PerspectiveTransformOperation* self, NKWebKit::WtfAbi::TextStream* stream) {
+    if (!self) throw std::invalid_argument("WebCore::PerspectiveTransformOperation::dump: null this");
+    if (!stream) throw std::invalid_argument("WebCore::PerspectiveTransformOperation::dump: null WTF::TextStream");
+    if (self->m_base.m_type != PerspectiveOperationType) throw std::invalid_argument("WebCore::PerspectiveTransformOperation::dump: not a perspective operation");
+    const LegacyLength length = self->m_p;
+    NKWebKit::WtfAbi::AppendCString(stream->text, "perspective(");
+    DumpLength(*stream, length);
+    NKWebKit::WtfAbi::AppendCString(stream->text, ")");
 }
 
 bool APS5_VABI _ZNK7WebCore29PerspectiveTransformOperationeqERKNS_18TransformOperationE(const WebCore::PerspectiveTransformOperation* self, const WebCore::LegacyTransformOperation& other) {
