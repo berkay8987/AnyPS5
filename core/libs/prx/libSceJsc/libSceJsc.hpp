@@ -17,6 +17,7 @@
 #include "prx/libSceJsc/include/ProtoCallFrameExports.hpp"
 #include "prx/libSceJsc/include/SanitizeStackExports.hpp"
 #include "prx/libSceJsc/include/SpeculatedTypeExports.hpp"
+#include "prx/libSceJsc/include/SuperSamplerExports.hpp"
 #include "prx/libSceJsc/include/WtfAssertionsExports.hpp"
 #include "prx/libSceJsc/include/ScriptCallArgumentHandlerExports.hpp"
 #include "prx/libSceJsc/include/WtfCpuTimeExports.hpp"

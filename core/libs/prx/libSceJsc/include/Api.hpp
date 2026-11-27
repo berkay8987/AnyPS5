@@ -55,7 +55,6 @@ int APS5_VABI _ZN9Inspector20DOMBackendDispatcher13performSearchElON3WTF6RefPtrI
 int APS5_VABI _ZN3JSC2VM14sharedInstanceEv();
 int APS5_VABI _ZN9Inspector23TargetBackendDispatcher15setPauseOnStartElON3WTF6RefPtrINS1_8JSONImpl6ObjectENS1_13DumbPtrTraitsIS4_EEEE();
 int APS5_VABI _ZNK3JSC8Profiler8Database6toJSONEv();
-int APS5_VABI _ZN3JSC22resetSuperSamplerStateEv();
 int APS5_VABI _ZN3JSC7JSProxy9setTargetERNS_2VMEPNS_14JSGlobalObjectE();
 int APS5_VABI _ZNK3WTF8JSONImpl9ArrayBase3endEv();
 int APS5_VABI _ZN9Inspector14InspectorAgent29willDestroyFrontendAndBackendENS_16DisconnectReasonE();

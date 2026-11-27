@@ -323,10 +323,6 @@ int APS5_VABI _ZNK3JSC8Profiler8Database6toJSONEv() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3JSC22resetSuperSamplerStateEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN3JSC7JSProxy9setTargetERNS_2VMEPNS_14JSGlobalObjectE() {
     NotImplemented_nid_no_patch(__func__);
 }
