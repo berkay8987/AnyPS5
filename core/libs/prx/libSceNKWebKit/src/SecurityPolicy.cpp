@@ -53,6 +53,8 @@
  * Derived from Source/WebCore/page/SecurityPolicy.cpp@80f77e94c63ee7202eec3d4b5b1a021dd89011ba and Source/WTF/wtf/URL.cpp@80f77e94c63ee7202eec3d4b5b1a021dd89011ba
  */
 
+#include "prx/libSceNKWebKit/include/SecurityOriginExports.hpp"
+#include "prx/libSceNKWebKit/include/SecurityOriginFromStringExports.hpp"
 #include "prx/libSceNKWebKit/include/SecurityPolicyExports.hpp"
 #include "prx/libSceNKWebKit/include/WtfExports.hpp"
 #include "prx/libc/include/General.hpp"
@@ -129,6 +131,36 @@ bool ProtocolIs(const std::u16string& prefix, const char* protocol) {
     return false;
 }
 
+enum class ReferrerPolicy : std::uint8_t {
+    EmptyString,
+    NoReferrer,
+    NoReferrerWhenDowngrade,
+    SameOrigin,
+    Origin,
+    StrictOrigin,
+    OriginWhenCrossOrigin,
+    StrictOriginWhenCrossOrigin,
+    UnsafeUrl
+};
+
+String ReferrerToOriginString(const String* referrer) {
+    const auto origin = _ZN7WebCore14SecurityOrigin16createFromStringERKN3WTF6StringE(referrer);
+    const String originString = _ZNK7WebCore14SecurityOrigin8toStringEv(origin.get());
+    const auto view = NKWebKit::WtfAbi::ViewOf(originString.impl);
+    constexpr std::string_view null = "null";
+    bool isNull = view.length == null.size();
+    for (unsigned index = 0; isNull && index < view.length; ++index) isNull = NKWebKit::WtfAbi::CodeUnitAt(view, index) == null[index];
+    if (isNull) return String();
+    void* characters = nullptr;
+    String result(NKWebKit::WtfAbi::CreateUninitialized(view.length + 1, view.is8Bit, characters));
+    for (unsigned index = 0; index <= view.length; ++index) {
+        const char16_t unit = index < view.length ? NKWebKit::WtfAbi::CodeUnitAt(view, index) : u'/';
+        if (view.is8Bit) static_cast<unsigned char*>(characters)[index] = static_cast<unsigned char>(unit);
+        else static_cast<char16_t*>(characters)[index] = unit;
+    }
+    return result;
+}
+
 }
 
 namespace NKWebKit::WebCoreAbi {
@@ -158,6 +190,33 @@ bool APS5_VABI _ZN7WebCore14SecurityPolicy18shouldHideReferrerERKN3WTF3URLERKNS1
     if (!referrerIsSecureURL) return false;
     bool urlIsSecureURL = _ZNK3WTF3URL10protocolIsENS_10StringViewE(url, {"https", 5, true});
     return !urlIsSecureURL;
+}
+
+String APS5_VABI _ZN7WebCore14SecurityPolicy22generateReferrerHeaderENS_14ReferrerPolicyERKN3WTF3URLERKNS2_6StringE(std::uint8_t referrerPolicy, const NKWebKit::WtfAbi::URL* url, const String* referrer) {
+    if (!url) throw std::invalid_argument("null WTF::URL reference");
+    if (!referrer) throw std::invalid_argument("null WTF::String reference");
+    const auto view = NKWebKit::WtfAbi::ViewOf(referrer->impl);
+    if (!view.length) return String();
+    if (!_ZN3WTF22protocolIsInHTTPFamilyENS_10StringViewE(view)) return String();
+    switch (static_cast<ReferrerPolicy>(referrerPolicy)) {
+    case ReferrerPolicy::NoReferrer:
+        return String();
+    case ReferrerPolicy::SameOrigin:
+    case ReferrerPolicy::OriginWhenCrossOrigin:
+    case ReferrerPolicy::StrictOriginWhenCrossOrigin:
+        NotImplemented_nid_no_patch("WebCore::SecurityPolicy::generateReferrerHeader: SecurityOrigin::canRequest");
+    case ReferrerPolicy::Origin:
+        return ReferrerToOriginString(referrer);
+    case ReferrerPolicy::StrictOrigin:
+        if (_ZN7WebCore14SecurityPolicy18shouldHideReferrerERKN3WTF3URLERKNS1_6StringE(url, referrer)) return String();
+        return ReferrerToOriginString(referrer);
+    case ReferrerPolicy::UnsafeUrl:
+        return *referrer;
+    case ReferrerPolicy::EmptyString:
+    case ReferrerPolicy::NoReferrerWhenDowngrade:
+        break;
+    }
+    return _ZN7WebCore14SecurityPolicy18shouldHideReferrerERKN3WTF3URLERKNS1_6StringE(url, referrer) ? String() : *referrer;
 }
 
 }

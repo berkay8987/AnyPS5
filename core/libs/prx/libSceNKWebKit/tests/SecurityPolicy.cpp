@@ -85,6 +85,106 @@ void Test() {
     Check(secure, unicode, true, "non-ASCII UTF-16 prefix");
 }
 
+struct ParsedURL {
+    URL url{};
+    String owner;
+    explicit ParsedURL(std::string_view text) {
+        const URL base{};
+        const String string = MakeString(text, false);
+        _ZN3WTF3URLC2ERKS0_RKNS_6StringEPKNS_15URLTextEncodingE(&url, &base, &string, nullptr);
+        owner = String(url.impl);
+    }
+};
+
+std::string Text(const String& value) {
+    std::string text;
+    if (!value.impl) return text;
+    const auto view = NKWebKit::WtfAbi::ViewOf(value.impl);
+    for (unsigned index = 0; index < view.length; ++index) text.push_back(static_cast<char>(NKWebKit::WtfAbi::CodeUnitAt(view, index)));
+    return text;
+}
+
+String Referrer(std::uint8_t policy, const ParsedURL& destination, const String& referrer) {
+    return _ZN7WebCore14SecurityPolicy22generateReferrerHeaderENS_14ReferrerPolicyERKN3WTF3URLERKNS2_6StringE(policy, &destination.url, &referrer);
+}
+
+void RequireReferrer(std::uint8_t policy, const ParsedURL& destination, const String& referrer, const char* expected, int line) {
+    const String result = Referrer(policy, destination, referrer);
+    const bool ok = expected ? result.impl && Text(result) == expected : !result.impl;
+    if (!ok) {
+        std::fprintf(stderr, "generateReferrerHeader mismatch at line %d: policy %u got \"%s\"\n", line, policy, Text(result).c_str());
+        std::abort();
+    }
+}
+
+#define Referred(policy, destination, referrer, expected) RequireReferrer((policy), (destination), (referrer), (expected), __LINE__)
+
+bool ThrowsAny(std::uint8_t policy, const ParsedURL& destination, const String& referrer) {
+    try {
+        Referrer(policy, destination, referrer);
+    } catch (const std::exception&) {
+        return true;
+    }
+    return false;
+}
+
+void TestReferrerHeader() {
+    constexpr std::uint8_t EmptyString = 0, NoReferrer = 1, NoReferrerWhenDowngrade = 2, SameOrigin = 3, Origin = 4, StrictOrigin = 5,
+        OriginWhenCrossOrigin = 6, StrictOriginWhenCrossOrigin = 7, UnsafeUrl = 8;
+    const ParsedURL secure("https://target.example/page");
+    const ParsedURL insecure("http://target.example/page");
+    for (bool wide : {false, true}) {
+        const String https = MakeString("https://source.example:8443/path?q=1", wide);
+        const String http = MakeString("http://source.example/path", wide);
+        Referred(EmptyString, secure, https, "https://source.example:8443/path?q=1");
+        Referred(EmptyString, insecure, https, nullptr);
+        Referred(NoReferrerWhenDowngrade, secure, https, "https://source.example:8443/path?q=1");
+        Referred(NoReferrerWhenDowngrade, insecure, https, nullptr);
+        Referred(NoReferrerWhenDowngrade, insecure, http, "http://source.example/path");
+        Referred(NoReferrerWhenDowngrade, secure, http, "http://source.example/path");
+        Referred(NoReferrer, secure, https, nullptr);
+        Referred(NoReferrer, insecure, http, nullptr);
+        Referred(Origin, secure, https, "https://source.example:8443/");
+        Referred(Origin, insecure, https, "https://source.example:8443/");
+        Referred(Origin, secure, http, "http://source.example/");
+        Referred(StrictOrigin, secure, https, "https://source.example:8443/");
+        Referred(StrictOrigin, insecure, https, nullptr);
+        Referred(StrictOrigin, insecure, http, "http://source.example/");
+        Referred(UnsafeUrl, insecure, https, "https://source.example:8443/path?q=1");
+        Referred(9, secure, https, "https://source.example:8443/path?q=1");
+        Referred(9, insecure, https, nullptr);
+        for (std::uint8_t policy = EmptyString; policy <= UnsafeUrl; ++policy) {
+            Referred(policy, secure, String(), nullptr);
+            Referred(policy, secure, MakeString("", wide), nullptr);
+            Referred(policy, secure, MakeString("ftp://source.example/", wide), nullptr);
+            Referred(policy, secure, MakeString("data:text/plain,x", wide), nullptr);
+            Referred(policy, secure, MakeString(" https://source.example/", wide), nullptr);
+        }
+        for (std::uint8_t policy : {SameOrigin, OriginWhenCrossOrigin, StrictOriginWhenCrossOrigin}) {
+            if (!ThrowsAny(policy, secure, https)) std::abort();
+        }
+        const unsigned before = https.impl->refCount;
+        {
+            const String same = Referrer(UnsafeUrl, insecure, https);
+            if (same.impl != https.impl || https.impl->refCount != before + 2) std::abort();
+        }
+        if (https.impl->refCount != before) std::abort();
+        Referred(Origin, secure, MakeString("http://exa mple/", wide), nullptr);
+        Referred(Origin, secure, MakeString("HTTPS://Source.Example:443/x", wide), "https://source.example/");
+    }
+    const String referrer = MakeString("https://source.example/", false);
+    try {
+        _ZN7WebCore14SecurityPolicy22generateReferrerHeaderENS_14ReferrerPolicyERKN3WTF3URLERKNS2_6StringE(Origin, nullptr, &referrer);
+        std::abort();
+    } catch (const std::invalid_argument&) {
+    }
+    try {
+        _ZN7WebCore14SecurityPolicy22generateReferrerHeaderENS_14ReferrerPolicyERKN3WTF3URLERKNS2_6StringE(Origin, &secure.url, nullptr);
+        std::abort();
+    } catch (const std::invalid_argument&) {
+    }
+}
+
 void Require(bool condition, int line) {
     if (!condition) {
         std::fprintf(stderr, "shouldHideReferrer guest pointer check failed at line %d\n", line);
@@ -170,6 +270,7 @@ int main() {
     try {
         Test();
         TestGuestPointers();
+        TestReferrerHeader();
     } catch (const std::exception& error) {
         std::fprintf(stderr, "SecurityPolicy test exception: %s\n", error.what());
         return 1;
