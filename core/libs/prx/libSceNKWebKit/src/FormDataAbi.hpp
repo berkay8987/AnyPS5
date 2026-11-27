@@ -25,6 +25,15 @@ struct FormDataEncodedBlob {
     WtfAbi::URL url;
 };
 
+struct FormDataOptionalWallTime {
+    bool engaged;
+    double value;
+};
+
+static_assert(sizeof(FormDataOptionalWallTime) == 16);
+static_assert(offsetof(FormDataOptionalWallTime, engaged) == 0);
+static_assert(offsetof(FormDataOptionalWallTime, value) == 8);
+
 union FormDataElementStorage {
     FormDataByteVector bytes;
     FormDataEncodedFile file;

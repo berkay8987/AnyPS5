@@ -13,6 +13,8 @@ WebCore::Ref<NKWebKit::WebCoreAbi::FormData> APS5_VABI _ZN7WebCore8FormData6crea
 WebCore::Ref<NKWebKit::WebCoreAbi::FormData> APS5_VABI _ZN7WebCore8FormData6createEPKvm(const void* data, std::size_t size);
 void APS5_VABI _ZN7WebCore8FormData10appendDataEPKvm(NKWebKit::WebCoreAbi::FormData* self, const void* data, std::size_t size);
 void APS5_VABI _ZN7WebCore8FormData10appendBlobERKN3WTF3URLE(NKWebKit::WebCoreAbi::FormData* self, const NKWebKit::WtfAbi::URL* blobURL);
+void APS5_VABI _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(NKWebKit::WebCoreAbi::FormData* self, const NKWebKit::WtfAbi::String* filename, std::int64_t start, std::int64_t length,
+    const NKWebKit::WebCoreAbi::FormDataOptionalWallTime* expectedModificationTime);
 void APS5_VABI _ZN7WebCore8FormDataD1Ev(NKWebKit::WebCoreAbi::FormData* self);
 void APS5_VABI _ZN7WebCore8FormDataD2Ev(NKWebKit::WebCoreAbi::FormData* self);
 WebCore::Ref<NKWebKit::WebCoreAbi::FormData> APS5_VABI _ZNK7WebCore8FormData12isolatedCopyEv(const NKWebKit::WebCoreAbi::FormData* self);

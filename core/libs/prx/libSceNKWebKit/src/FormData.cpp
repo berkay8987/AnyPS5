@@ -329,6 +329,21 @@ void APS5_VABI _ZN7WebCore8FormData10appendBlobERKN3WTF3URLE(FormData* self, con
     formData.hasLengthInBytes = false;
 }
 
+void APS5_VABI _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(FormData* self, const NKWebKit::WtfAbi::String* filename, std::int64_t start, std::int64_t length,
+                                                                                    const NKWebKit::WebCoreAbi::FormDataOptionalWallTime* expectedModificationTime) {
+    auto& formData = Checked(self);
+    if (!filename) throw std::invalid_argument("null WTF::String");
+    if (!expectedModificationTime) throw std::invalid_argument("null WTF::Optional<WTF::WallTime>");
+    StringImpl* const name = filename->impl;
+    const auto time = *expectedModificationTime;
+    auto& slot = NextSlot(formData);
+    Retain(name);
+    slot.storage.file = {name, start, length, time.engaged ? time.value : 0.0, time.engaged};
+    slot.index = kFile;
+    ++formData.elements.size;
+    formData.hasLengthInBytes = false;
+}
+
 void APS5_VABI _ZN7WebCore8FormDataD1Ev(FormData* self) {
     auto& formData = Checked(self);
     Validate(formData.elements);

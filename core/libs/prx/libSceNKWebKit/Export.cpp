@@ -5705,10 +5705,6 @@ int APS5_VABI _ZN7WebCore9InlineBox16placeEllipsisBoxEbfffRfRb() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN7WebCore26MessagePortChannelRegistry26checkRemotePortForActivityERKNS_21MessagePortIdentifierEON3WTF17CompletionHandlerIFvNS_26MessagePortChannelProvider11HasActivityEEEE() {
     NotImplemented_nid_no_patch(__func__);
 }

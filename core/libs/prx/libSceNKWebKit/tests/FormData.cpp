@@ -376,6 +376,80 @@ static void TestAppendBlobFromOwnElement() {
     Require(guestAllocations.empty());
 }
 
+static void AppendFileRange(FormData* formData, const String* name, std::int64_t start, std::int64_t length, bool hasTime, double time) {
+    const NKWebKit::WebCoreAbi::FormDataOptionalWallTime optional{hasTime, time};
+    _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(formData, name, start, length, &optional);
+}
+
+static void RequireFile(const FormDataElement& element, const StringImpl* name, std::int64_t start, std::int64_t length, bool hasTime, double time) {
+    Require(element.index == 1);
+    Require(element.storage.file.filename == name);
+    Require(element.storage.file.fileStart == start);
+    Require(element.storage.file.fileLength == length);
+    Require(element.storage.file.hasExpectedFileModificationTime == hasTime);
+    Require(element.storage.file.expectedFileModificationTime == (hasTime ? time : 0.0));
+}
+
+static void TestAppendFileRange() {
+    String name = MakeString("/tmp/upload.bin");
+    FormData* formData = Create("ab", 2);
+    Require(_ZNK7WebCore8FormData13lengthInBytesEv(formData) == 2);
+    Require(formData->hasLengthInBytes);
+    AppendFileRange(formData, &name, 3, 7, true, 1234.5);
+    Require(!formData->hasLengthInBytes);
+    Require(formData->elements.size == 2);
+    Require(name.impl->refCount == 4);
+    RequireFile(formData->elements.buffer[1], name.impl, 3, 7, true, 1234.5);
+    AppendFileRange(formData, &name, 0, -1, false, 99.0);
+    Require(formData->elements.size == 3);
+    Require(name.impl->refCount == 6);
+    RequireFile(formData->elements.buffer[2], name.impl, 0, -1, false, 0.0);
+    const String null;
+    AppendFileRange(formData, &null, -5, 0, true, -1.0);
+    Require(formData->elements.size == 4);
+    RequireFile(formData->elements.buffer[3], nullptr, -5, 0, true, -1.0);
+    {
+        auto copy = _ZNK7WebCore8FormData12isolatedCopyEv(formData);
+        FormData* copied = std::exchange(copy.m_ptr, nullptr);
+        Require(copied->elements.size == 4);
+        const auto& file = copied->elements.buffer[1];
+        Require(file.storage.file.filename != name.impl && Text(file.storage.file.filename) == "/tmp/upload.bin");
+        Require(file.storage.file.fileStart == 3 && file.storage.file.fileLength == 7);
+        Require(file.storage.file.hasExpectedFileModificationTime && file.storage.file.expectedFileModificationTime == 1234.5);
+        Free(copied);
+    }
+    Free(formData);
+    Require(name.impl->refCount == 2);
+
+    formData = Create();
+    for (unsigned i = 0; i < 16; ++i) AppendFileRange(formData, &name, i, 1, false, 0.0);
+    Require(formData->elements.capacity == 16);
+    const unsigned before = name.impl->refCount;
+    AppendFileRange(formData, reinterpret_cast<const String*>(&formData->elements.buffer[0].storage.file.filename), 16, 2, true, 5.0);
+    Require(formData->elements.size == 17);
+    Require(formData->elements.capacity > 16);
+    RequireFile(formData->elements.buffer[16], name.impl, 16, 2, true, 5.0);
+    Require(name.impl->refCount == before + 2);
+    Free(formData);
+    Require(name.impl->refCount == 2);
+
+    formData = Create();
+    const NKWebKit::WebCoreAbi::FormDataOptionalWallTime none{false, 0.0};
+    Require(Throws<std::invalid_argument>([&] {
+        _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(formData, nullptr, 0, 1, &none);
+    }));
+    Require(Throws<std::invalid_argument>([&] {
+        _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(formData, &name, 0, 1, nullptr);
+    }));
+    Require(Throws<std::invalid_argument>([&] {
+        _ZN7WebCore8FormData15appendFileRangeERKN3WTF6StringExxNS1_8OptionalINS1_8WallTimeEEE(nullptr, &name, 0, 1, &none);
+    }));
+    Require(formData->elements.size == 0);
+    Require(name.impl->refCount == 2);
+    Free(formData);
+    Require(guestAllocations.empty());
+}
+
 static void TestFlatten() {
     String name = MakeString("blob:f");
     String file = MakeString("/tmp/f");
@@ -757,6 +831,7 @@ int main() {
     TestElementGrowth();
     TestAppendBlob();
     TestAppendBlobFromOwnElement();
+    TestAppendFileRange();
     TestFlatten();
     TestAsBlobURL();
     TestLengthInBytes();
