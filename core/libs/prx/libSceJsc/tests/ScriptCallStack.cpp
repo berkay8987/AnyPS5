@@ -124,6 +124,9 @@ void TestConstructors() {
     Require(Throws<std::invalid_argument>([&] { Construct1(nullptr, &frames); }));
     Require(Throws<std::invalid_argument>([&] { Construct2(&stack, nullptr); }));
     Require(Throws<std::invalid_argument>([&] { Construct1(&stack, reinterpret_cast<ScriptCallFrameVector*>(std::uintptr_t{0x10})); }));
+    ScriptCallFrameVector kept{storage, 3, 2};
+    Require(Throws<std::invalid_argument>([&] { Construct2(reinterpret_cast<ScriptCallStack*>(std::uintptr_t{0x10}), &kept); }));
+    Require(kept.buffer == storage && kept.capacity == 3 && kept.size == 2);
 }
 
 void TestCreate() {

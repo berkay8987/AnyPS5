@@ -84,8 +84,8 @@ void Construct(ScriptCallStack* self, ScriptCallFrameVector* frames, const char*
     if (!self) throw std::invalid_argument(std::string(function) + ": null this");
     if (!frames) throw std::invalid_argument(std::string(function) + ": null frames");
     const ScriptCallFrameVector taken = ReadGuest(frames, "Inspector::ScriptCallStack: unreadable frames");
-    WriteGuest(frames, ScriptCallFrameVector{}, "Inspector::ScriptCallStack: unwritable frames");
     WriteGuest(self, ScriptCallStack{1u, taken}, "Inspector::ScriptCallStack: unwritable this");
+    WriteGuest(frames, ScriptCallFrameVector{}, "Inspector::ScriptCallStack: unwritable frames");
 }
 
 }
