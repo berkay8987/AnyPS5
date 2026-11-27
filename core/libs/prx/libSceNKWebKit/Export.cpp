@@ -6893,10 +6893,6 @@ int APS5_VABI _ZN7WebCore17FrameLoaderClientC2ERKS0_() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN7WebCore17LibWebRTCProvider19unregisterMDNSNamesEN3WTF16ObjectIdentifierINS_22DocumentIdentifierTypeEEE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZNK7WebCore16HTMLInputElement4sizeEv() {
     NotImplemented_nid_no_patch(__func__);
 }

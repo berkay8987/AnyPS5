@@ -77,6 +77,7 @@ int main() {
     _ZN7WebCore17FrameLoaderClient56dispatchWillDisconnectDOMWindowExtensionFromGlobalObjectEPNS_18DOMWindowExtensionE();
     _ZN7WebCore17FrameLoaderClientD2Ev();
     _ZN7WebCore17JSDOMRectReadOnly14finishCreationERN3JSC2VME();
+    _ZN7WebCore17LibWebRTCProvider19unregisterMDNSNamesEN3WTF16ObjectIdentifierINS_22DocumentIdentifierTypeEEE();
     _ZN7WebCore17LibWebRTCProvider9setActiveEb();
     _ZN7WebCore17LibWebRTCProviderD1Ev();
     _ZN7WebCore17LibWebRTCProviderD2Ev();

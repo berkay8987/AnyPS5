@@ -692,6 +692,9 @@ void APS5_VABI _ZN7WebCore17FrameLoaderClientD2Ev() {
 void APS5_VABI _ZN7WebCore17JSDOMRectReadOnly14finishCreationERN3JSC2VME() {
 }
 
+void APS5_VABI _ZN7WebCore17LibWebRTCProvider19unregisterMDNSNamesEN3WTF16ObjectIdentifierINS_22DocumentIdentifierTypeEEE() {
+}
+
 void APS5_VABI _ZN7WebCore17LibWebRTCProvider9setActiveEb() {
 }
 
