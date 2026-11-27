@@ -27,8 +27,6 @@ int APS5_VABI _ZN10Deprecated18ScriptFunctionCallD1Ev();
 int APS5_VABI _ZN10Deprecated18ScriptFunctionCallD2Ev();
 int APS5_VABI _ZN10Deprecated25ScriptCallArgumentHandler14appendArgumentEPKc();
 int APS5_VABI _ZN10Deprecated25ScriptCallArgumentHandler14appendArgumentERKN3WTF6StringE();
-int APS5_VABI _ZN10Deprecated25ScriptCallArgumentHandlernaEm();
-int APS5_VABI _ZN10Deprecated25ScriptCallArgumentHandlernwEm();
 int APS5_VABI _ZN3JSC10Identifier3addERNS_2VMEPKc();
 int APS5_VABI _ZN3JSC10JSFunction11getCallDataEPNS_6JSCellE();
 int APS5_VABI _ZN3JSC10JSFunction16getConstructDataEPNS_6JSCellE();

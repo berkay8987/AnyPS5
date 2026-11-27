@@ -19,6 +19,7 @@
 #include "prx/libSceJsc/include/SpeculatedTypeExports.hpp"
 #include "prx/libSceJsc/include/WtfAssertionsExports.hpp"
 #include "prx/libSceJsc/include/ScriptCallArgumentHandlerExports.hpp"
+#include "prx/libSceJsc/include/ScriptCallArgumentHandlerNewExports.hpp"
 #include "prx/libSceJsc/include/WtfCpuTimeExports.hpp"
 #include "prx/libSceJsc/include/WtfDataLogExports.hpp"
 #include "prx/libSceJsc/include/WtfFileSystemExports.hpp"
