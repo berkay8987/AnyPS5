@@ -41,6 +41,7 @@ void Check(bool condition, int line) {
 constexpr auto appendName = &_ZN7WebCore16SQLiteFileSystem28appendDatabaseFileNameToPathERKN3WTF6StringES4_;
 constexpr auto deleteEmptyDirectory = &_ZN7WebCore16SQLiteFileSystem28deleteEmptyDatabaseDirectoryERKN3WTF6StringE;
 constexpr auto modificationTime = &_ZN7WebCore16SQLiteFileSystem24databaseModificationTimeERKN3WTF6StringE;
+constexpr auto hashName = &_ZN7WebCore16SQLiteFileSystem22computeHashForFileNameERKN3WTF6StringE;
 
 String Make(const std::string& text) {
     return _ZN3WTF6String8fromUTF8EPKhm(reinterpret_cast<const unsigned char*>(text.data()), text.size());
@@ -96,6 +97,28 @@ void TestAppending() {
     Appended(null, Make("\xe4\xb8\xad"), u"/中");
     const String path = Make("/shared/");
     Appended(path, path, u"/shared//shared/");
+}
+
+void RequireHash(const String& name, const char16_t* expected, int line) {
+    const unsigned before = name.impl ? name.impl->refCount : 0;
+    {
+        const String result = hashName(name);
+        Check(result.impl && Is8Bit(result) && Units(result) == expected && result.impl->refCount == 2, line);
+    }
+    if (name.impl) Check(name.impl->refCount == before, line);
+}
+
+#define Hashed(name, expected) RequireHash((name), (expected), __LINE__)
+
+void TestHashing() {
+    Hashed(String(), u"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855");
+    Hashed(Make(""), u"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855");
+    Hashed(Make("a.sqlite"), u"E1A20302484302A564C2B9DBBE7CA90248F797B75C24D90860527F1D3F2C7884");
+    Hashed(Make("https_example.com_0"), u"A05523AA7038E9ADC16C59284190A5A16EDBAE3DDB398A00AECF0E777F4AC669");
+    Hashed(Make("caf\xc3\xa9.db"),u"CAD56EA645200B42C0911BF591AB8D45408AFE34FAF8CF80C5FBB9B8BF01938B");
+    const String wide = Make("\xe4\xb8\xad\xe6\x96\x87.db");
+    Require(!Is8Bit(wide));
+    Hashed(wide, u"E91363C08630E61F334265F5EDF519937A6FF54211F7D6C5EB10C0261F1E6B21");
 }
 
 std::string NativeText(const std::filesystem::path& path) {
@@ -233,6 +256,7 @@ int main() {
     };
     ApplicationHeapRegister_nid_no_patch(heapApi.data());
     TestAppending();
+    TestHashing();
     TestFiles();
     std::puts("libSceNKWebKit legacy SQLiteFileSystem tests passed");
     return 0;

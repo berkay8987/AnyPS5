@@ -60,6 +60,7 @@
 
 #include "prx/libc/include/general/VabiMacros.hpp"
 #include "prx/libSceNKWebKit/include/LegacySQLiteFileSystemExports.hpp"
+#include "prx/libSceNKWebKit/include/PalCryptoDigestExports.hpp"
 #include "prx/libSceNKWebKit/include/WtfExports.hpp"
 #include "prx/libSceNKWebKit/src/BlobDataFileReferenceAbi.hpp"
 #include "prx/libSceNKWebKit/src/WtfStringAbi.hpp"
@@ -100,6 +101,23 @@ String APS5_VABI _ZN7WebCore16SQLiteFileSystem28appendDatabaseFileNameToPathERKN
     for (unsigned index = 0; index < pathView.length; ++index) Append(characters, is8Bit, position, NKWebKit::WtfAbi::CodeUnitAt(pathView, index));
     if (separator) Append(characters, is8Bit, position, u'/');
     for (unsigned index = 0; index < nameView.length; ++index) Append(characters, is8Bit, position, NKWebKit::WtfAbi::CodeUnitAt(nameView, index));
+    return result;
+}
+
+String APS5_VABI _ZN7WebCore16SQLiteFileSystem22computeHashForFileNameERKN3WTF6StringE(const String& fileName) {
+    const auto digest = _ZN3PAL12CryptoDigest6createENS0_9AlgorithmE(PAL::CryptoDigest::Algorithm::SHA_256);
+    const CString utf8 = _ZNK3WTF6String4utf8ENS_14ConversionModeE(&fileName, 0);
+    const char* data = utf8.buffer ? reinterpret_cast<const char*>(utf8.buffer + 1) : nullptr;
+    _ZN3PAL12CryptoDigest8addBytesEPKvm(digest.get(), data, utf8.buffer ? utf8.buffer->length : 0);
+    auto hash = _ZN3PAL12CryptoDigest11computeHashEv(digest.get());
+    constexpr char hexDigits[] = "0123456789ABCDEF";
+    void* characters = nullptr;
+    String result(NKWebKit::WtfAbi::CreateUninitialized(hash.size * 2, true, characters));
+    auto* output = static_cast<unsigned char*>(characters);
+    for (unsigned index = 0; index < hash.size; ++index) {
+        output[index * 2] = static_cast<unsigned char>(hexDigits[hash.data()[index] >> 4]);
+        output[index * 2 + 1] = static_cast<unsigned char>(hexDigits[hash.data()[index] & 0xF]);
+    }
     return result;
 }
 

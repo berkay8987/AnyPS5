@@ -6,6 +6,7 @@
 
 extern "C" {
 
+NKWebKit::WtfAbi::String APS5_VABI _ZN7WebCore16SQLiteFileSystem22computeHashForFileNameERKN3WTF6StringE(const NKWebKit::WtfAbi::String& fileName);
 NKWebKit::WtfAbi::String APS5_VABI _ZN7WebCore16SQLiteFileSystem28appendDatabaseFileNameToPathERKN3WTF6StringES4_(const NKWebKit::WtfAbi::String& path, const NKWebKit::WtfAbi::String& fileName);
 bool APS5_VABI _ZN7WebCore16SQLiteFileSystem28deleteEmptyDatabaseDirectoryERKN3WTF6StringE(const NKWebKit::WtfAbi::String& path);
 NKWebKit::WebCoreAbi::OptionalWallTime APS5_VABI _ZN7WebCore16SQLiteFileSystem24databaseModificationTimeERKN3WTF6StringE(const NKWebKit::WtfAbi::String& fileName);
