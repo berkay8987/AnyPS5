@@ -943,10 +943,6 @@ int APS5_VABI _ZN3JSC14StructureCache32emptyObjectStructureConcurrentlyEPNS_14JS
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3JSC14formatDateTimeERKN3WTF17GregorianDateTimeENS_14DateTimeFormatEb() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN3JSC15ArrayBufferViewD0Ev() {
     NotImplemented_nid_no_patch(__func__);
 }

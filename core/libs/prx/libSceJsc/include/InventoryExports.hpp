@@ -68,7 +68,6 @@ int APS5_VABI _ZN3JSC14JSGlobalObject7destroyEPNS_6JSCellE();
 int APS5_VABI _ZN3JSC14JSRunLoopTimer13timeUntilFireEv();
 int APS5_VABI _ZN3JSC14LocalAllocator16allocateSlowCaseERNS_4HeapEPNS_17GCDeferralContextENS_21AllocationFailureModeE();
 int APS5_VABI _ZN3JSC14StructureCache32emptyObjectStructureConcurrentlyEPNS_14JSGlobalObjectEPNS_8JSObjectEj();
-int APS5_VABI _ZN3JSC14formatDateTimeERKN3WTF17GregorianDateTimeENS_14DateTimeFormatEb();
 int APS5_VABI _ZN3JSC15ArrayBufferViewD0Ev();
 int APS5_VABI _ZN3JSC15ArrayBufferViewD1Ev();
 int APS5_VABI _ZN3JSC15ArrayBufferViewD2Ev();
