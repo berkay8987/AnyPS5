@@ -2,7 +2,6 @@
 #include "prx/libSceIcu/Status.hpp"
 #include "prx/libc/include/General.hpp"
 #include <cerrno>
-#include <cstddef>
 #include <cstdint>
 
 namespace {
@@ -24,19 +23,6 @@ void WriteStatus(std::int32_t* status, std::int32_t value, const char* caller) {
     const bool ok = GuestCopyOut_nid_no_patch(status, &value, sizeof(value));
     errno = savedErrno;
     if (!ok) NotImplemented_nid_no_patch(caller);
-}
-
-bool CollationKeyword(const char* keyword, const char* caller) {
-    constexpr char expected[] = "collation";
-    for (std::size_t index = 0; index < sizeof(expected); ++index) {
-        char unit = 0;
-        const int savedErrno = errno;
-        const bool ok = GuestCopyIn_nid_no_patch(&unit, keyword + index, sizeof(unit));
-        errno = savedErrno;
-        if (!ok) NotImplemented_nid_no_patch(caller);
-        if (unit != expected[index]) return false;
-    }
-    return true;
 }
 
 } // namespace
@@ -61,20 +47,6 @@ void APS5_VABI ucol_getContractionsAndExpansions_nid_postfix(const UCollator* co
         WriteStatus(status, Icu::IllegalArgument, __func__);
         return;
     }
-    NotImplemented_nid_no_patch(__func__);
-}
-
-UEnumeration* APS5_VABI ucol_getKeywordValues_nid_postfix(const char* keyword, std::int32_t* status) {
-    if (Failure(status, __func__)) return nullptr;
-    if (!keyword || !CollationKeyword(keyword, __func__)) {
-        WriteStatus(status, Icu::IllegalArgument, __func__);
-        return nullptr;
-    }
-    NotImplemented_nid_no_patch(__func__);
-}
-
-UEnumeration* APS5_VABI ucol_getKeywordValuesForLocale_nid_postfix(const char*, const char*, std::int8_t, std::int32_t* status) {
-    if (Failure(status, __func__)) return nullptr;
     NotImplemented_nid_no_patch(__func__);
 }
 

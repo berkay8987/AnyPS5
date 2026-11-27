@@ -362,9 +362,6 @@ void Run() {
         status = incoming;
         RequireThrows([&] { ucol_getContractionsAndExpansions_nid_postfix(coll, set, set, 1, &status); });
         RequireThrows([&] { ucol_getContractionsAndExpansions_nid_postfix(coll, nullptr, nullptr, 0, &status); });
-        RequireThrows([&] { ucol_getKeywordValues_nid_postfix("collation", &status); });
-        RequireThrows([&] { ucol_getKeywordValuesForLocale_nid_postfix("collation", "de", 1, &status); });
-        RequireThrows([&] { ucol_getKeywordValuesForLocale_nid_postfix(nullptr, nullptr, 0, &status); });
         RequireThrows([&] { ucol_strcollIter_nid_postfix(coll, iterator, iterator, &status); });
         Require(status == incoming);
     }
