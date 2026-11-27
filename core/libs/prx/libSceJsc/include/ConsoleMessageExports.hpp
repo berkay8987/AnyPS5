@@ -28,6 +28,26 @@ struct ConsoleMessage {
 
 inline constexpr std::uint8_t MessageTypeEndGroup = 7;
 
+enum class JSONLogValueType : std::int32_t {
+    String,
+    JSON,
+};
+
+struct JSONLogValue {
+    JSONLogValueType type;
+    Jsc::WtfAbi::StringImpl* value;
+};
+
+struct JSONLogValueVector {
+    JSONLogValue* buffer;
+    unsigned capacity;
+    unsigned size;
+};
+
+static_assert(sizeof(JSONLogValue) == 16);
+static_assert(offsetof(JSONLogValue, value) == 8);
+static_assert(sizeof(JSONLogValueVector) == 16);
+
 static_assert(sizeof(ConsoleMessage) == 88);
 static_assert(offsetof(ConsoleMessage, message) == 8);
 static_assert(offsetof(ConsoleMessage, jsonLogValuesBuffer) == 32);
@@ -55,5 +75,13 @@ void APS5_VABI _ZN9Inspector14ConsoleMessageC2EN3JSC13MessageSourceENS1_11Messag
     Jsc::InspectorAbi::ConsoleMessage* self, std::uint8_t source, std::uint8_t type, std::uint8_t level,
     Jsc::WtfAbi::StringImpl* const* message, Jsc::WtfAbi::StringImpl* const* url, unsigned line, unsigned column, void* globalObject,
     std::uint64_t requestIdentifier);
+void APS5_VABI
+_ZN9Inspector14ConsoleMessageC1EN3JSC13MessageSourceENS1_11MessageTypeENS1_12MessageLevelEON3WTF6VectorINS5_12JSONLogValueELm0ENS5_15CrashOnOverflowELm16ENS5_10FastMallocEEEPNS1_14JSGlobalObjectEm(
+    Jsc::InspectorAbi::ConsoleMessage* self, std::uint8_t source, std::uint8_t type, std::uint8_t level,
+    Jsc::InspectorAbi::JSONLogValueVector* messages, void* globalObject, std::uint64_t requestIdentifier);
+void APS5_VABI
+_ZN9Inspector14ConsoleMessageC2EN3JSC13MessageSourceENS1_11MessageTypeENS1_12MessageLevelEON3WTF6VectorINS5_12JSONLogValueELm0ENS5_15CrashOnOverflowELm16ENS5_10FastMallocEEEPNS1_14JSGlobalObjectEm(
+    Jsc::InspectorAbi::ConsoleMessage* self, std::uint8_t source, std::uint8_t type, std::uint8_t level,
+    Jsc::InspectorAbi::JSONLogValueVector* messages, void* globalObject, std::uint64_t requestIdentifier);
 
 }
