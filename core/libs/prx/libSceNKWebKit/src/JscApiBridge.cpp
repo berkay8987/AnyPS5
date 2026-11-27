@@ -78,8 +78,12 @@ void SetPassword(Jsc::WtfAbi::URL* url, Jsc::WtfAbi::StringView password) {
     WtfAbi::SetUrlPassword(reinterpret_cast<WtfAbi::URL*>(url), WtfAbi::StringView{password.characters, password.length, password.is8Bit});
 }
 
+void AppendStringBuilderCharacters(Jsc::WtfAbi::StringBuilder* builder, const char* characters, unsigned length) {
+    _ZN3WTF13StringBuilder16appendCharactersEPKhj(reinterpret_cast<WtfAbi::StringBuilder*>(builder), reinterpret_cast<const unsigned char*>(characters), length);
+}
+
 constexpr Jsc::ApiBridge bridge{&MakeString, &HasPropertyForKey, &ResizeStringBuilder, &RemoveUrlFragmentIdentifier,
-    &WriteTextStreamIndent, &AppendNumberRespectingIntegers, &ConstructUrlFromBase, &SetPassword};
+    &WriteTextStreamIndent, &AppendNumberRespectingIntegers, &ConstructUrlFromBase, &SetPassword, &AppendStringBuilderCharacters};
 const bool bridgeRegistered = (RegisterApiBridge_nid_no_patch(&bridge), true);
 
 }

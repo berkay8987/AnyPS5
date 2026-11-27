@@ -245,6 +245,44 @@ void TestHasPropertyForKey(JSGlobalContextRef ctx) {
     Require(!HasPropertyForKey(ctx, object, nullptr, nullptr));
 }
 
+void EscapeJson(Builder& builder, const void* characters, unsigned length, bool is8Bit) {
+    _ZN3WTF8JSONImpl5Value12escapeStringERNS_13StringBuilderENS_10StringViewE(reinterpret_cast<Jsc::WtfAbi::StringBuilder*>(&builder),
+        Jsc::WtfAbi::StringView{characters, length, is8Bit});
+}
+
+std::u16string JsonText(const char* pattern) {
+    std::u16string text;
+    for (; *pattern; ++pattern) text += *pattern == '|' ? char16_t{0x5C} : *pattern == '~' ? char16_t{0x22} : static_cast<char16_t>(*pattern);
+    return text;
+}
+
+void TestJsonEscapeString() {
+    auto narrow = NewBuilder();
+    Append8(narrow, "x");
+    const char text[] = {'a', 0x22, '<', 0x0A};
+    EscapeJson(narrow, text, 4, true);
+    Require(narrow.is8Bit && Contents(narrow) == JsonText("xa|~|u003C|n"));
+    FreeBuffer(narrow);
+
+    auto wide = NewBuilder();
+    const char16_t wideText[] = {0x3b1, u'b'};
+    EscapeJson(wide, wideText, 2, false);
+    Require(wide.is8Bit && Contents(wide) == JsonText("|u03B1b"));
+    FreeBuffer(wide);
+
+    auto upconverted = NewBuilder();
+    const char16_t alpha[] = {0x3b1};
+    _ZN3WTF13StringBuilder16appendCharactersEPKDsj(&upconverted, alpha, 1);
+    const char tab[] = {0x09};
+    EscapeJson(upconverted, tab, 1, true);
+    Require(!upconverted.is8Bit && Contents(upconverted) == char16_t{0x3b1} + JsonText("|t"));
+    FreeBuffer(upconverted);
+
+    auto empty = NewBuilder();
+    EscapeJson(empty, nullptr, 0, true);
+    Require(empty.length == 0 && !empty.buffer && !empty.string.impl);
+}
+
 }
 
 int main() {
@@ -253,6 +291,7 @@ int main() {
     TestMakeString(ctx);
     TestHasPropertyForKey(ctx);
     TestStringBuilderResize();
+    TestJsonEscapeString();
     JSGlobalContextRelease(ctx);
     return 0;
 }

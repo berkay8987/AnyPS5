@@ -215,7 +215,6 @@ int APS5_VABI _ZN3WTF6StringC2EPKDs();
 int APS5_VABI _ZN3WTF6StringC2EPKh();
 int APS5_VABI _ZN3WTF7RunLoop6isMainEv();
 int APS5_VABI _ZN3WTF7RunLoop7iterateEv();
-int APS5_VABI _ZN3WTF8JSONImpl5Value12escapeStringERNS_13StringBuilderENS_10StringViewE();
 void APS5_VABI _ZN7bmalloc11AllIsoHeapsC1ERKSt11scoped_lockIJNS_5MutexEEE(void* self, const void*);
 void APS5_VABI _ZN7bmalloc11AllIsoHeapsC2ERKSt11scoped_lockIJNS_5MutexEEE(void* self, const void*);
 int APS5_VABI _ZN7bmalloc11EnvironmentC1ERKSt11scoped_lockIJNS_5MutexEEE();

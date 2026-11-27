@@ -23,6 +23,7 @@
 #include "prx/libSceJsc/include/WtfDataLogExports.hpp"
 #include "prx/libSceJsc/include/WtfFileSystemExports.hpp"
 #include "prx/libSceJsc/include/WtfHelperExports.hpp"
+#include "prx/libSceJsc/include/WtfJsonEscapeExports.hpp"
 #include "prx/libSceJsc/include/WtfLoggerExports.hpp"
 #include "prx/libSceJsc/include/WtfPageBlockExports.hpp"
 #include "prx/libSceJsc/include/WtfRandomExports.hpp"

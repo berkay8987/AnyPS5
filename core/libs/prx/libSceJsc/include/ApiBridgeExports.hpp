@@ -22,6 +22,7 @@ struct ApiBridge {
     void (*appendNumberRespectingIntegers)(WtfAbi::TextStream* stream, double value);
     void (*constructUrl)(WtfAbi::URL* url, const WtfAbi::URL* base, const WtfAbi::String* relative, const void* encoding);
     void (*setUrlPassword)(WtfAbi::URL* url, WtfAbi::StringView password);
+    void (*appendStringBuilderCharacters)(WtfAbi::StringBuilder* builder, const char* characters, unsigned length);
 };
 
 }
@@ -37,5 +38,7 @@ Jsc::WtfAbi::TextStream* APS5_VABI _ZN3WTF10TextStreamlsERKNS0_30FormatNumberRes
 void APS5_VABI _ZN3WTF3URLC1ERKS0_RKNS_6StringEPKNS_15URLTextEncodingE(Jsc::WtfAbi::URL* self, const Jsc::WtfAbi::URL* base, const Jsc::WtfAbi::String* relative, const void* encoding);
 void APS5_VABI _ZN3WTF3URL11setPasswordENS_10StringViewE(Jsc::WtfAbi::URL* self, Jsc::WtfAbi::StringView password);
 void RegisterApiBridge_nid_no_patch(const Jsc::ApiBridge* bridge);
+using StringBuilderAppendFunction = void (*)(Jsc::WtfAbi::StringBuilder* builder, const char* characters, unsigned length);
+StringBuilderAppendFunction StringBuilderAppendBridge_nid_no_patch(const char* function);
 
 }

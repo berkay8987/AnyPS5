@@ -1531,10 +1531,6 @@ int APS5_VABI _ZN3WTF7RunLoop7iterateEv() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3WTF8JSONImpl5Value12escapeStringERNS_13StringBuilderENS_10StringViewE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 void APS5_VABI _ZN7bmalloc11AllIsoHeapsC1ERKSt11scoped_lockIJNS_5MutexEEE(void* self, const void*) {
     ZeroGuestObject(self, 8, __func__);
 }

@@ -28,6 +28,10 @@ void RegisterApiBridge_nid_no_patch(const Jsc::ApiBridge* bridge) {
     registeredBridge.store(bridge, std::memory_order_release);
 }
 
+StringBuilderAppendFunction StringBuilderAppendBridge_nid_no_patch(const char* function) {
+    return Bridged(&Jsc::ApiBridge::appendStringBuilderCharacters, function);
+}
+
 const void* APS5_VABI JSValueMakeString(const void* context, const GuestJSString* string) {
     if (!context) return nullptr;
     return Bridge(__func__).makeString(context, string);
