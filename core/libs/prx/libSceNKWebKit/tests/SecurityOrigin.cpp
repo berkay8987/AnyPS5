@@ -239,6 +239,56 @@ static void TestTupleOrigins() {
     Require(SameOrigin(wide, Create("https", "wide.example")));
 }
 
+static OriginRef CreateFromParts(const String& protocol, const String& host, std::optional<std::uint16_t> port) {
+    const NKWebKit::WebCoreAbi::LegacyOptionalPort optional{port.has_value(), port.value_or(0)};
+    return _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(&protocol, &host, &optional);
+}
+
+static OriginRef CreateFromParts(std::string_view protocol, std::string_view host, std::optional<std::uint16_t> port) {
+    return CreateFromParts(Make(protocol), Make(host), port);
+}
+
+static void TestCreateFromParts() {
+    auto origin = CreateFromParts("https", "Example.COM", 8443);
+    Require(!IsOpaque(origin));
+    Require(origin->refCount.load() == 1);
+    Require(Is(origin->data.storage.tuple.protocol, "https"));
+    Require(Is(origin->data.storage.tuple.host, "example.com"));
+    Require(origin->data.storage.tuple.port.hasValue && origin->data.storage.tuple.port.value == 8443);
+    Require(Is(origin->domain, "example.com"));
+    Require(Is(ToString(origin), "https://example.com:8443"));
+    Require(SameOrigin(origin, Create("https", "example.com", "8443")));
+
+    Require(Is(ToString(CreateFromParts("https", "example.com", 443)), "https://example.com"));
+    Require(!CreateFromParts("https", "example.com", 443)->data.storage.tuple.port.hasValue);
+    Require(Is(ToString(CreateFromParts("https", "example.com", std::nullopt)), "https://example.com"));
+    Require(Is(ToString(CreateFromParts("http", "example.com", 443)), "http://example.com:443"));
+    Require(Is(ToString(CreateFromParts("http", "example.com", 0)), "http://example.com:0"));
+    Require(Is(ToString(CreateFromParts("http", "example.com", 65535)), "http://example.com:65535"));
+    Require(Is(ToString(CreateFromParts("ws", "example.com", 80)), "ws://example.com"));
+    Require(Is(ToString(CreateFromParts("HTTP", "example.com", 8080)), "http://example.com:8080"));
+    Require(Is(ToString(CreateFromParts("http", "example.com:8080", std::nullopt)), "http://example.com:8080"));
+    Require(Is(ToString(CreateFromParts("http", "example.com:8080", 9090)), "http://example.com:9090"));
+    Require(Is(ToString(CreateFromParts("http", "example.com:8080", 80)), "http://example.com:8080"));
+
+    auto wide = CreateFromParts(Make("https", true), Make("WIDE.example", true), 444);
+    Require(Is(ToString(wide), "https://wide.example:444"));
+
+    auto opaque = CreateFromParts("data", "example.com", 8080);
+    Require(IsOpaque(opaque));
+    Require(Is(ToString(opaque), "null"));
+    Require(IsOpaque(CreateFromParts("http", "exa mple.com", 8080)));
+    Require(IsOpaque(CreateFromParts(String(), String(), 8080)));
+
+    const String protocol = Make("https");
+    const String host = Make("example.com");
+    const NKWebKit::WebCoreAbi::LegacyOptionalPort none{false, 0};
+    Require(Throws([&] { _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(nullptr, &host, &none); }));
+    Require(Throws([&] { _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(&protocol, nullptr, &none); }));
+    Require(Throws([&] { _ZN7WebCore14SecurityOrigin6createERKN3WTF6StringES4_NS1_8OptionalItEE(&protocol, &host, nullptr); }));
+    Require(protocol.impl->refCount == 2 && host.impl->refCount == 2);
+}
+
 static void TestOpaqueOrigins() {
     auto data = Create(MakeURL("data", "", "", "text/plain,x", false));
     auto data2 = Create(MakeURL("data", "", "", "text/plain,x", false));
@@ -611,6 +661,7 @@ static void TestOriginDataIsolatedCopy() {
 int main() {
     TestLoopback();
     TestTupleOrigins();
+    TestCreateFromParts();
     TestOpaqueOrigins();
     TestCreateUnique();
     TestFileOrigins();

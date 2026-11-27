@@ -96,6 +96,14 @@ struct OptionalPort {
     bool hasValue;
 };
 
+struct LegacyOptionalPort {
+    bool engaged;
+    std::uint16_t value;
+};
+
+static_assert(sizeof(LegacyOptionalPort) == 4);
+static_assert(offsetof(LegacyOptionalPort, value) == 2);
+
 struct OptionalBool {
     bool value;
     bool hasValue;
