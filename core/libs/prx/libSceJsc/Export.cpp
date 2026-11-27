@@ -391,10 +391,6 @@ int APS5_VABI _ZN9Inspector21HeapBackendDispatcherD0Ev() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN9Inspector15ScriptCallStackC2ERN3WTF6VectorINS_15ScriptCallFrameELm0ENS1_15CrashOnOverflowELm16ENS1_10FastMallocEEE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN9Inspector32TimelineBackendDispatcherHandlerC2Ev() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -658,10 +654,6 @@ int APS5_VABI _ZN3WTF7RunLoop14initializeMainEv() {
 }
 
 int APS5_VABI _ZN9Inspector22RemoteAutomationTargetC2ERKS0_() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN9Inspector15ScriptCallStack6appendERKNS_15ScriptCallFrameE() {
     NotImplemented_nid_no_patch(__func__);
 }
 
@@ -1604,14 +1596,6 @@ int APS5_VABI _ZN9Inspector14InjectedScriptC2EN10Deprecated12ScriptObjectEPNS_20
 }
 
 int APS5_VABI _ZN9Inspector15RemoteInspector39sendAutomaticInspectionCandidateMessageEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN9Inspector15ScriptCallStack6createERN3WTF6VectorINS_15ScriptCallFrameELm0ENS1_15CrashOnOverflowELm16ENS1_10FastMallocEEE() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN9Inspector15ScriptCallStackC1ERN3WTF6VectorINS_15ScriptCallFrameELm0ENS1_15CrashOnOverflowELm16ENS1_10FastMallocEEE() {
     NotImplemented_nid_no_patch(__func__);
 }
 
