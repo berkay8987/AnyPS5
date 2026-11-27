@@ -18577,10 +18577,6 @@ int APS5_VABI _ZN7WebCore24DocumentParserYieldTokenD2Ev() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN7WebCore24FrameDestructionObserver14frameDestroyedEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN7WebCore24FrameDestructionObserverD0Ev() {
     NotImplemented_nid_no_patch(__func__);
 }

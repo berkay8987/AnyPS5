@@ -2944,7 +2944,7 @@ int APS5_VABI _ZN7WebCore24DocumentParserYieldTokenC1ERNS_8DocumentE();
 int APS5_VABI _ZN7WebCore24DocumentParserYieldTokenC2ERNS_8DocumentE();
 int APS5_VABI _ZN7WebCore24DocumentParserYieldTokenD1Ev();
 int APS5_VABI _ZN7WebCore24DocumentParserYieldTokenD2Ev();
-int APS5_VABI _ZN7WebCore24FrameDestructionObserver14frameDestroyedEv();
+void APS5_VABI _ZN7WebCore24FrameDestructionObserver14frameDestroyedEv(void* self);
 void APS5_VABI _ZN7WebCore24FrameDestructionObserver14willDetachPageEv();
 int APS5_VABI _ZN7WebCore24FrameDestructionObserverD0Ev();
 int APS5_VABI _ZN7WebCore24FrameDestructionObserverD1Ev();
