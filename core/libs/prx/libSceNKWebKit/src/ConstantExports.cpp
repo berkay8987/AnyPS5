@@ -464,6 +464,10 @@ int APS5_VABI _ZNK7WebCore16TrackPrivateBase10trackIndexEv() {
     return 0;
 }
 
+bool APS5_VABI _ZNK7WebCore17FrameLoaderClient42shouldEnableInAppBrowserPrivacyProtectionsEv() {
+    return false;
+}
+
 int APS5_VABI _ZNK7WebCore19BlurFilterOperation11movesPixelsEv() {
     return 1;
 }

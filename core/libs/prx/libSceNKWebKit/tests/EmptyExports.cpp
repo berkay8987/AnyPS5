@@ -56,6 +56,7 @@ int main() {
     _ZN7WebCore17FrameLoaderClient15didCreateWindowERNS_9DOMWindowE();
     _ZN7WebCore17FrameLoaderClient15didDisownOpenerEv();
     _ZN7WebCore17FrameLoaderClient17dispatchDidLayoutEv();
+    _ZN7WebCore17FrameLoaderClient19finishedLoadingIconEmPNS_12SharedBufferE();
     _ZN7WebCore17FrameLoaderClient20willInjectUserScriptERNS_15DOMWrapperWorldE();
     _ZN7WebCore17FrameLoaderClient21didChangeScrollOffsetEv();
     _ZN7WebCore17FrameLoaderClient22dispatchDidReceiveIconEv();
@@ -65,6 +66,7 @@ int main() {
     _ZN7WebCore17FrameLoaderClient26dispatchWillChangeDocumentERKN3WTF3URLES4_();
     _ZN7WebCore17FrameLoaderClient27registerForIconNotificationEv();
     _ZN7WebCore17FrameLoaderClient28didLoadFromRegistrableDomainEONS_17RegistrableDomainE();
+    _ZN7WebCore17FrameLoaderClient28notifyPageOfAppBoundBehaviorEv();
     _ZN7WebCore17FrameLoaderClient29dispatchDidChangeMainDocumentEv();
     _ZN7WebCore17FrameLoaderClient29dispatchDidNavigateWithinPageEv();
     _ZN7WebCore17FrameLoaderClient29dispatchGlobalObjectAvailableERNS_15DOMWrapperWorldE();

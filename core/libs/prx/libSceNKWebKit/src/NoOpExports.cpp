@@ -629,6 +629,9 @@ void APS5_VABI _ZN7WebCore17FrameLoaderClient15didDisownOpenerEv() {
 void APS5_VABI _ZN7WebCore17FrameLoaderClient17dispatchDidLayoutEv() {
 }
 
+void APS5_VABI _ZN7WebCore17FrameLoaderClient19finishedLoadingIconEmPNS_12SharedBufferE() {
+}
+
 void APS5_VABI _ZN7WebCore17FrameLoaderClient20willInjectUserScriptERNS_15DOMWrapperWorldE() {
 }
 
@@ -654,6 +657,9 @@ void APS5_VABI _ZN7WebCore17FrameLoaderClient27registerForIconNotificationEv() {
 }
 
 void APS5_VABI _ZN7WebCore17FrameLoaderClient28didLoadFromRegistrableDomainEONS_17RegistrableDomainE() {
+}
+
+void APS5_VABI _ZN7WebCore17FrameLoaderClient28notifyPageOfAppBoundBehaviorEv() {
 }
 
 void APS5_VABI _ZN7WebCore17FrameLoaderClient29dispatchDidChangeMainDocumentEv() {

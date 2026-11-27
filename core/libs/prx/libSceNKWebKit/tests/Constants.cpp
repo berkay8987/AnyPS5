@@ -143,6 +143,7 @@ int main() {
     Require(_ZNK7WebCore14LoaderStrategy27shouldPerformSecurityChecksEv() == 0);
     Require(_ZNK7WebCore15ActiveDOMObject25virtualHasPendingActivityEv() == 0);
     Require(_ZNK7WebCore16TrackPrivateBase10trackIndexEv() == 0);
+    Require(!_ZNK7WebCore17FrameLoaderClient42shouldEnableInAppBrowserPrivacyProtectionsEv());
     Require((_ZNK7WebCore19BlurFilterOperation11movesPixelsEv() & 0xff) == 1);
     Require((_ZNK7WebCore19BlurFilterOperation14affectsOpacityEv() & 0xff) == 1);
     Require(_ZNK7WebCore20LowPowerModeNotifier21isLowPowerModeEnabledEv() == 0);
