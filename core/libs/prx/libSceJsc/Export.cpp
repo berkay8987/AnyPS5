@@ -1359,14 +1359,6 @@ int APS5_VABI _ZN3WTF10AtomString4initEv() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI _ZN3WTF10StackTrace17captureStackTraceEii() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZN3WTF10StackTrace8demangleEPv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
 int APS5_VABI _ZN3WTF10StringImpl17createFromLiteralEPKcj() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -1720,10 +1712,6 @@ int APS5_VABI _ZNK3JSC8Profiler8Database4toJSEPNS_14JSGlobalObjectE() {
 }
 
 int APS5_VABI _ZNK3JSC9ClassInfo35hasStaticSetterOrReadonlyPropertiesEv() {
-    NotImplemented_nid_no_patch(__func__);
-}
-
-int APS5_VABI _ZNK3WTF10StackTrace4dumpERNS_11PrintStreamEPKc() {
     NotImplemented_nid_no_patch(__func__);
 }
 

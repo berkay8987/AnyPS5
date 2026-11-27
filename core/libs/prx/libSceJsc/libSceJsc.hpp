@@ -12,6 +12,7 @@
 #include "prx/libSceJsc/include/ContentSearchUtilitiesExports.hpp"
 #include "prx/libSceJsc/include/WtfBase64Exports.hpp"
 #include "prx/libSceJsc/include/WtfSha1Exports.hpp"
+#include "prx/libSceJsc/include/WtfStackTraceExports.hpp"
 #include "prx/libSceJsc/include/InventoryExports.hpp"
 #include "prx/libSceJsc/include/PlacementNewExports.hpp"
 #include "prx/libSceJsc/include/ProtoCallFrameExports.hpp"

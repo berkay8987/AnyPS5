@@ -172,8 +172,6 @@ int APS5_VABI _ZN3JSC9Structure3pinERKN3WTF14AbstractLockerERNS_2VMEPNS_13Proper
 int APS5_VABI _ZN3JSC9constructEPNS_14JSGlobalObjectENS_7JSValueERKNS_7ArgListEPKc();
 int APS5_VABI _ZN3JSC9constructEPNS_14JSGlobalObjectENS_7JSValueES2_RKNS_7ArgListEPKc();
 int APS5_VABI _ZN3WTF10AtomString4initEv();
-int APS5_VABI _ZN3WTF10StackTrace17captureStackTraceEii();
-int APS5_VABI _ZN3WTF10StackTrace8demangleEPv();
 int APS5_VABI _ZN3WTF10StringImpl17createFromLiteralEPKcj();
 int APS5_VABI _ZN3WTF10StringImpl17createFromLiteralEPKc();
 int APS5_VABI _ZN3WTF10StringImpl18simplifyWhiteSpaceEv();
@@ -261,7 +259,6 @@ int APS5_VABI _ZNK3JSC7JSValue14toThisSlowCaseEPNS_14JSGlobalObjectENS_8ECMAMode
 int APS5_VABI _ZNK3JSC8JSObject43anyObjectInChainMayInterceptIndexedAccessesERNS_2VME();
 int APS5_VABI _ZNK3JSC8Profiler8Database4toJSEPNS_14JSGlobalObjectE();
 int APS5_VABI _ZNK3JSC9ClassInfo35hasStaticSetterOrReadonlyPropertiesEv();
-int APS5_VABI _ZNK3WTF10StackTrace4dumpERNS_11PrintStreamEPKc();
 int APS5_VABI _ZNK3WTF10StringImpl10tryGetUtf8ENS_14ConversionModeE();
 int APS5_VABI _ZNK3WTF10StringImpl18tryGetUtf8ForRangeEjjNS_14ConversionModeE();
 int APS5_VABI _ZNK3WTF10StringView10tryGetUtf8ENS_14ConversionModeE();
