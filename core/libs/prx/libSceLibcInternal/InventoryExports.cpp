@@ -14,6 +14,8 @@
 
 namespace {
 
+constexpr std::int32_t IosStateMask = 0x17;
+
 std::mutex standardStreamInitMutex;
 int narrowStreamInitCount = -1;
 int wideStreamInitCount = -1;
@@ -599,8 +601,12 @@ void APS5_VABI _ZNSt8ios_base4InitD2Ev_nid_postfix(void*) {
     ReleaseStandardStreamInit(narrowStreamInitCount);
 }
 
-int APS5_VABI libSceLibcInternalInventory_147_nid_no_patch() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI libSceLibcInternalInventory_147_nid_no_patch(GuestLocale::IosBase* self, std::int32_t state, bool reraise) {
+    if (self == nullptr) throw std::invalid_argument("ios_base::clear: null stream");
+    self->state = state & IosStateMask;
+    if ((self->state & self->exceptions) == 0) return;
+    if (reraise) NotImplemented_nid_no_patch("ios_base::clear: rethrowing the current exception");
+    NotImplemented_nid_no_patch("ios_base::clear: throwing ios_base::failure");
 }
 APS5_EXPORT("QXJCcrXoqpU", libSceLibcInternalInventory_147_nid_no_patch);
 

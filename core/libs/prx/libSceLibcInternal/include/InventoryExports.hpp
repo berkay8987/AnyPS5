@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "prx/libc/include/GuestLocale.hpp"
 #include "SceTypes.hpp"
 #include <streambuf>
 
@@ -124,7 +125,7 @@ int APS5_VABI libSceLibcInternalInventory_143_nid_no_patch();
 void APS5_VABI libSceLibcInternalInventory_144_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_145_nid_no_patch(void* self);
 void APS5_VABI _ZNSt8ios_base4InitD2Ev_nid_postfix(void* self);
-int APS5_VABI libSceLibcInternalInventory_147_nid_no_patch();
+void APS5_VABI libSceLibcInternalInventory_147_nid_no_patch(GuestLocale::IosBase* self, std::int32_t state, bool reraise);
 void APS5_VABI libSceLibcInternalInventory_149_nid_no_patch(void* self, const void* locinfo);
 void APS5_VABI libSceLibcInternalInventory_153_nid_no_patch(void* self);
 void APS5_VABI libSceLibcInternalInventory_154_nid_no_patch(void* self);
